@@ -3,15 +3,401 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Account - PowerBank Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <title>My Account - PowerHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-cyan: #00d9ff;
+            --primary-purple: #b84cff;
+            --primary-blue: #4c6fff;
+            --dark-bg: #0a0e27;
+            --dark-card: #131937;
+            --dark-hover: #1a2347;
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #00d9ff 0%, #4c6fff 100%);
+            --gradient-3: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-cyan);
+        }
+
+        .cart-link {
+            position: relative;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -12px;
+            background: var(--gradient-3);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* Page header */
+        .page-header {
+            margin-top: 80px;
+            padding: 60px 0;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+        }
+
+        .page-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 48px;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Account Section */
+        .account-section {
+            padding: 60px 0 120px;
+        }
+
+        .account-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 40px;
+        }
+
+        /* Sidebar */
+        .account-sidebar {
+            background: var(--dark-card);
+            border: 1px solid rgba(0, 217, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+
+        .account-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .account-nav-link {
+            padding: 15px 20px;
+            border-radius: 12px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            cursor: pointer;
+        }
+
+        .account-nav-link:hover {
+            background: var(--dark-hover);
+            color: var(--primary-cyan);
+        }
+
+        .account-nav-link.active {
+            background: rgba(0, 217, 255, 0.1);
+            color: var(--primary-cyan);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+        }
+
+        /* Account Content */
+        .account-content {
+            background: var(--dark-card);
+            border: 1px solid rgba(0, 217, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+        }
+
+        .account-tab {
+            display: none;
+        }
+
+        .account-tab.active {
+            display: block;
+        }
+
+        .account-tab h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 32px;
+            margin-bottom: 30px;
+            color: var(--primary-cyan);
+        }
+
+        /* Profile Info */
+        .profile-info {
+            max-width: 700px;
+        }
+
+        .info-row {
+            display: flex;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            flex: 0 0 180px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        .info-value {
+            flex: 1;
+            color: var(--text-primary);
+            font-size: 15px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 40px;
+        }
+
+        .empty-state-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-state h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+        }
+
+        .empty-state p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        /* Settings Section */
+        .settings-section {
+            margin-bottom: 40px;
+        }
+
+        .settings-section h3 {
+            font-size: 22px;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+        }
+
+        .settings-section p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        /* Button */
+        .btn {
+            display: inline-block;
+            padding: 16px 35px;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--gradient-2);
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 217, 255, 0.5);
+        }
+
+        /* Footer */
+        .footer {
+            background: #070a1f;
+            padding: 60px 0 30px;
+            border-top: 1px solid rgba(0, 217, 255, 0.1);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h4 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--primary-cyan);
+        }
+
+        .footer-section p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary-cyan);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .account-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .account-sidebar {
+                position: static;
+            }
+
+            .account-nav {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 36px;
+            }
+
+            .account-content {
+                padding: 30px 20px;
+            }
+
+            .info-row {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .info-label {
+                flex: none;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .empty-state {
+                padding: 60px 20px;
+            }
+        }
+    </style>
 </head>
 <body>
     <header class="header">
         <div class="container">
             <nav class="nav">
-                <a href="index.html" class="logo">PowerBank Pro</a>
+                <a href="index.html" class="logo">PowerHub</a>
                 <div class="nav-links">
                     <a href="index.html">Home</a>
                     <a href="products.html">Products</a>
@@ -36,13 +422,14 @@
                 <div class="account-layout">
                     <aside class="account-sidebar">
                         <nav class="account-nav">
-                            <a href="#" class="account-nav-link active" data-tab="profile">Profile</a>
-                            <a href="#" class="account-nav-link" data-tab="orders">Order History</a>
-                            <a href="#" class="account-nav-link" data-tab="settings">Settings</a>
+                            <a href="#" class="account-nav-link active" data-tab="profile">👤 Profile</a>
+                            <a href="#" class="account-nav-link" data-tab="orders">📦 Order History</a>
+                            <a href="#" class="account-nav-link" data-tab="settings">⚙️ Settings</a>
                         </nav>
                     </aside>
 
                     <div class="account-content">
+                        <!-- Profile Tab -->
                         <div id="profileTab" class="account-tab active">
                             <h2>Profile Information</h2>
                             <div class="profile-info">
@@ -58,6 +445,10 @@
                                     <span class="info-label">Member Since:</span>
                                     <span class="info-value" id="profileMemberSince">-</span>
                                 </div>
+                                <div class="info-row">
+                                    <span class="info-label">Account Status:</span>
+                                    <span class="info-value" style="color: var(--primary-cyan);">✓ Active</span>
+                                </div>
                             </div>
                         </div>
 
@@ -66,8 +457,10 @@
                             <h2>Order History</h2>
                             <div id="ordersContainer">
                                 <div class="empty-state">
-                                    <p>No orders yet</p>
-                                    <a href="products.html" class="btn btn-primary">Start Shopping</a>
+                                    <div class="empty-state-icon">📦</div>
+                                    <h3>No orders yet</h3>
+                                    <p>Start shopping to see your order history here!</p>
+                                    <a href="products.html" class="btn btn-primary">Browse Products</a>
                                 </div>
                             </div>
                         </div>
@@ -76,8 +469,20 @@
                         <div id="settingsTab" class="account-tab">
                             <h2>Account Settings</h2>
                             <div class="settings-section">
-                                <h3>Preferences</h3>
-                                <p>Additional settings will be available here.</p>
+                                <h3>🔔 Notifications</h3>
+                                <p>Manage your email and notification preferences. Stay updated on new products, special offers, and order updates.</p>
+                            </div>
+                            <div class="settings-section">
+                                <h3>🔐 Security</h3>
+                                <p>Update your password and manage two-factor authentication settings to keep your account secure.</p>
+                            </div>
+                            <div class="settings-section">
+                                <h3>📍 Shipping Addresses</h3>
+                                <p>Manage your saved shipping addresses for faster checkout. Add, edit, or remove addresses as needed.</p>
+                            </div>
+                            <div class="settings-section">
+                                <h3>💳 Payment Methods</h3>
+                                <p>Securely store and manage your payment methods for convenient purchases.</p>
                             </div>
                         </div>
                     </div>
@@ -90,28 +495,39 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h4>PowerBank Pro</h4>
-                    <p>Premium portable charging solutions for your digital life.</p>
+                    <h4>PowerHub</h4>
+                    <p>Premium portable charging solutions engineered for modern life.</p>
                 </div>
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul>
                         <li><a href="products.html">Products</a></li>
                         <li><a href="account.html">My Account</a></li>
-                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="cart.html">Shopping Cart</a></li>
+                        <li><a href="login.html">Login</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Support</h4>
+                    <h4>Customer Support</h4>
                     <ul>
                         <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Shipping Info</a></li>
-                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Shipping Information</a></li>
+                        <li><a href="#">Returns & Warranty</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Technology</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 PowerBank Pro. All rights reserved.</p>
+                <p>&copy; 2024 PowerHub. All rights reserved. Designed for the future.</p>
             </div>
         </div>
     </footer>
@@ -127,7 +543,7 @@
             loadUserProfile();
         }
 
-        
+        // Tab switching
         document.querySelectorAll('.account-nav-link').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -148,7 +564,11 @@
             if (user) {
                 document.getElementById('profileName').textContent = user.name || 'N/A';
                 document.getElementById('profileEmail').textContent = user.email || 'N/A';
-                document.getElementById('profileMemberSince').textContent = new Date().toLocaleDateString();
+                document.getElementById('profileMemberSince').textContent = new Date().toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
             }
         }
     </script>

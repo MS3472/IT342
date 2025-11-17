@@ -3,22 +3,468 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - PowerBank Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <title>Register - PowerHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-cyan: #00d9ff;
+            --primary-purple: #b84cff;
+            --primary-blue: #4c6fff;
+            --dark-bg: #0a0e27;
+            --dark-card: #131937;
+            --dark-hover: #1a2347;
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #00d9ff 0%, #4c6fff 100%);
+            --gradient-3: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-cyan);
+        }
+
+        .cart-link {
+            position: relative;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -12px;
+            background: var(--gradient-3);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* Auth Section */
+        .auth-section {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            padding: 60px 0;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #0a0e27 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-section::before {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 217, 255, 0.1) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        .auth-section::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(184, 76, 255, 0.1) 0%, transparent 70%);
+            bottom: -100px;
+            left: -100px;
+            animation: pulse 6s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        .auth-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .auth-box {
+            background: var(--dark-card);
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            border-radius: 20px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 20px 60px rgba(0, 217, 255, 0.1);
+        }
+
+        .auth-box h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 36px;
+            margin-bottom: 10px;
+            text-align: center;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .auth-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 16px;
+            margin-bottom: 40px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px 18px;
+            border: 1px solid rgba(0, 217, 255, 0.2);
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            background: var(--dark-hover);
+            color: var(--text-primary);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-cyan);
+            box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1);
+        }
+
+        .form-control::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .password-input-wrapper {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--primary-cyan);
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            padding: 5px 10px;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+        }
+
+        .password-toggle:hover {
+            background: rgba(0, 217, 255, 0.1);
+        }
+
+        /* Password Strength Indicator */
+        .password-strength {
+            font-size: 13px;
+            margin-top: 8px;
+            font-weight: 500;
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .password-strength.weak {
+            color: var(--error-color);
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            display: block;
+        }
+
+        .password-strength.fair {
+            color: var(--warning-color);
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            display: block;
+        }
+
+        .password-strength.strong {
+            color: var(--success-color);
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            display: block;
+        }
+
+        /* Button */
+        .btn {
+            width: 100%;
+            padding: 16px;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--gradient-2);
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 217, 255, 0.5);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-cyan);
+            border: 2px solid var(--primary-cyan);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-cyan);
+            color: var(--dark-bg);
+        }
+
+        .btn-lg {
+            padding: 18px;
+            font-size: 17px;
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        /* Message */
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+
+        .message-success {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .message-error {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        /* Auth Divider */
+        .auth-divider {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .auth-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: rgba(0, 217, 255, 0.2);
+        }
+
+        .auth-divider span {
+            background: var(--dark-card);
+            padding: 0 15px;
+            position: relative;
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Footer */
+        .footer {
+            background: #070a1f;
+            padding: 60px 0 30px;
+            border-top: 1px solid rgba(0, 217, 255, 0.1);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h4 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--primary-cyan);
+        }
+
+        .footer-section p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary-cyan);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .auth-box {
+                padding: 40px 30px;
+            }
+
+            .auth-box h1 {
+                font-size: 28px;
+            }
+
+            .nav-links {
+                gap: 20px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .auth-box {
+                padding: 30px 20px;
+            }
+        }
+    </style>
 </head>
 <body>
     <header class="header">
         <div class="container">
             <nav class="nav">
-                <a href="index.html" class="logo">PowerBank Pro</a>
+                <a href="index.html" class="logo">PowerHub</a>
                 <div class="nav-links">
                     <a href="index.html">Home</a>
                     <a href="products.html">Products</a>
+                    <a href="login.html">Login</a>
                     <a href="cart.html" class="cart-link">
                         Cart <span class="cart-badge" id="cartBadge">0</span>
                     </a>
-                    <div id="authNav"></div>
                 </div>
             </nav>
         </div>
@@ -30,7 +476,7 @@
                 <div class="auth-container">
                     <div class="auth-box">
                         <h1>Create Account</h1>
-                        <p class="auth-subtitle">Join PowerBank Pro today</p>
+                        <p class="auth-subtitle">Join PowerHub today</p>
 
                         <form id="registerForm">
                             <div class="form-group">
@@ -72,7 +518,7 @@
                                 </div>
                             </div>
 
-                            <div id="registerMessage" class="message" style="display:none;"></div>
+                            <div id="registerMessage" class="message"></div>
 
                             <button type="submit" class="btn btn-primary btn-lg btn-block">
                                 Create Account
@@ -96,28 +542,39 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h4>PowerBank Pro</h4>
-                    <p>Premium portable charging solutions for your digital life.</p>
+                    <h4>PowerHub</h4>
+                    <p>Premium portable charging solutions engineered for modern life.</p>
                 </div>
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul>
                         <li><a href="products.html">Products</a></li>
                         <li><a href="account.html">My Account</a></li>
-                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="cart.html">Shopping Cart</a></li>
+                        <li><a href="login.html">Login</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Support</h4>
+                    <h4>Customer Support</h4>
                     <ul>
                         <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Shipping Info</a></li>
-                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Shipping Information</a></li>
+                        <li><a href="#">Returns & Warranty</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Technology</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 PowerBank Pro. All rights reserved.</p>
+                <p>&copy; 2024 PowerHub. All rights reserved. Designed for the future.</p>
             </div>
         </div>
     </footer>
@@ -131,7 +588,7 @@
             const strengthEl = document.getElementById('passwordStrength');
             
             if (password.length === 0) {
-                strengthEl.textContent = '';
+                strengthEl.style.display = 'none';
                 strengthEl.className = 'password-strength';
                 return;
             }
@@ -144,13 +601,13 @@
             if (/[^a-zA-Z0-9]/.test(password)) strength++;
             
             if (strength <= 2) {
-                strengthEl.textContent = 'Weak password';
+                strengthEl.textContent = '⚠ Weak password - Add more characters, numbers, or symbols';
                 strengthEl.className = 'password-strength weak';
             } else if (strength <= 3) {
-                strengthEl.textContent = 'Fair password';
+                strengthEl.textContent = '⚡ Fair password - Almost there!';
                 strengthEl.className = 'password-strength fair';
             } else {
-                strengthEl.textContent = 'Strong password';
+                strengthEl.textContent = '✓ Strong password - Great choice!';
                 strengthEl.className = 'password-strength strong';
             }
         });
@@ -158,6 +615,11 @@
         // Handle registration form submission
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Creating Account...';
             
             const name = document.getElementById('registerName').value.trim();
             const email = document.getElementById('registerEmail').value.trim();
@@ -168,30 +630,36 @@
             
             // Client-side validation
             if (!validateEmail(email)) {
-                messageEl.textContent = 'Please enter a valid email address';
+                messageEl.textContent = '✕ Please enter a valid email address';
                 messageEl.className = 'message message-error';
                 messageEl.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
                 return;
             }
             
             if (password.length < 8) {
-                messageEl.textContent = 'Password must be at least 8 characters long';
+                messageEl.textContent = '✕ Password must be at least 8 characters long';
                 messageEl.className = 'message message-error';
                 messageEl.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
                 return;
             }
             
             if (password !== confirmPassword) {
-                messageEl.textContent = 'Passwords do not match';
+                messageEl.textContent = '✕ Passwords do not match';
                 messageEl.className = 'message message-error';
                 messageEl.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
                 return;
             }
             
             const result = await register(email, password, name);
             
             if (result.success) {
-                messageEl.textContent = 'Account created successfully! Redirecting...';
+                messageEl.textContent = '✓ Account created successfully! Redirecting...';
                 messageEl.className = 'message message-success';
                 messageEl.style.display = 'block';
                 
@@ -200,9 +668,11 @@
                     window.location.href = 'account.html';
                 }, 1500);
             } else {
-                messageEl.textContent = result.message;
+                messageEl.textContent = '✕ ' + result.message;
                 messageEl.className = 'message message-error';
                 messageEl.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
             }
         });
 

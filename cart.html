@@ -3,15 +3,531 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shopping Cart - PowerBank Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <title>Shopping Cart - PowerHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-cyan: #00d9ff;
+            --primary-purple: #b84cff;
+            --primary-blue: #4c6fff;
+            --dark-bg: #0a0e27;
+            --dark-card: #131937;
+            --dark-hover: #1a2347;
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #00d9ff 0%, #4c6fff 100%);
+            --gradient-3: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --error-color: #ef4444;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 15px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary-cyan);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-2);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .cart-link {
+            position: relative;
+        }
+
+        .cart-badge {
+            position: absolute;
+            top: -8px;
+            right: -12px;
+            background: var(--gradient-3);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* Page header */
+        .page-header {
+            margin-top: 80px;
+            padding: 60px 0;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+        }
+
+        .page-header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 48px;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Cart Section */
+        .cart-section {
+            padding: 60px 0 120px;
+            min-height: 60vh;
+        }
+
+        .cart-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+        }
+
+        /* Cart Items */
+        .cart-items {
+            background: var(--dark-card);
+            border: 1px solid rgba(0, 217, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+        }
+
+        .cart-items h2 {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: var(--primary-cyan);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .cart-item {
+            display: grid;
+            grid-template-columns: 120px 1fr auto;
+            gap: 20px;
+            padding: 25px 0;
+            border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-item-image {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #1a2347 0%, #0f1330 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            overflow: hidden;
+        }
+
+        .cart-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cart-item-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .cart-item-details h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .cart-item-description {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+        }
+
+        .cart-item-price {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--primary-cyan);
+        }
+
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--dark-hover);
+            border-radius: 10px;
+            padding: 5px;
+            border: 1px solid rgba(0, 217, 255, 0.2);
+        }
+
+        .quantity-btn {
+            background: none;
+            border: none;
+            color: var(--primary-cyan);
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 700;
+            padding: 5px 12px;
+            transition: all 0.3s ease;
+            border-radius: 6px;
+        }
+
+        .quantity-btn:hover {
+            background: rgba(0, 217, 255, 0.1);
+        }
+
+        .quantity-input {
+            width: 50px;
+            text-align: center;
+            border: none;
+            background: transparent;
+            color: var(--text-primary);
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .remove-item-btn {
+            background: none;
+            border: none;
+            color: var(--error-color);
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: underline;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .remove-item-btn:hover {
+            color: #dc2626;
+        }
+
+        .cart-item-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .cart-item-total {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        /* Empty Cart */
+        .empty-cart {
+            text-align: center;
+            padding: 80px 40px;
+        }
+
+        .empty-cart-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-cart h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+        }
+
+        .empty-cart p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+        }
+
+        /* Cart Summary */
+        .cart-summary {
+            background: var(--dark-card);
+            border: 1px solid rgba(0, 217, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            height: fit-content;
+            position: sticky;
+            top: 120px;
+        }
+
+        .cart-summary h3 {
+            font-size: 24px;
+            margin-bottom: 25px;
+            color: var(--primary-cyan);
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        .summary-row span:last-child {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .cart-summary hr {
+            border: none;
+            border-top: 1px solid rgba(0, 217, 255, 0.2);
+            margin: 20px 0;
+        }
+
+        .summary-total {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-top: 20px;
+        }
+
+        .summary-total span:last-child {
+            color: var(--primary-cyan);
+            font-size: 28px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 16px 35px;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--gradient-2);
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 217, 255, 0.5);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-cyan);
+            border: 2px solid var(--primary-cyan);
+            width: 100%;
+            margin-top: 15px;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 217, 255, 0.1);
+        }
+
+        .btn-lg {
+            padding: 18px 40px;
+            font-size: 17px;
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        /* Footer */
+        .footer {
+            background: #070a1f;
+            padding: 60px 0 30px;
+            border-top: 1px solid rgba(0, 217, 255, 0.1);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h4 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: var(--primary-cyan);
+        }
+
+        .footer-section p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary-cyan);
+            padding-left: 5px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .cart-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-summary {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 36px;
+            }
+
+            .cart-item {
+                grid-template-columns: 80px 1fr;
+                gap: 15px;
+            }
+
+            .cart-item-right {
+                grid-column: 1 / -1;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 15px;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cart-items,
+            .cart-summary {
+                padding: 20px;
+            }
+
+            .empty-cart {
+                padding: 60px 20px;
+            }
+        }
+    </style>
 </head>
 <body>
     <header class="header">
         <div class="container">
             <nav class="nav">
-                <a href="index.html" class="logo">PowerBank Pro</a>
+                <a href="index.html" class="logo">PowerHub</a>
                 <div class="nav-links">
                     <a href="index.html">Home</a>
                     <a href="products.html">Products</a>
@@ -34,8 +550,17 @@
         <section class="cart-section">
             <div class="container">
                 <div class="cart-layout">
-                    <div class="cart-items" id="cartItemsContainer">
-                        <!-- Cart items loaded via JS -->
+                    <div class="cart-items">
+                        <h2>Your Items</h2>
+                        <div id="cartItemsContainer">
+                            <!-- Empty cart message -->
+                            <div class="empty-cart">
+                                <div class="empty-cart-icon">🛒</div>
+                                <h2>Your cart is empty</h2>
+                                <p>Add some amazing power banks to get started!</p>
+                                <a href="products.html" class="btn btn-primary">Browse Products</a>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="cart-summary">
@@ -49,7 +574,7 @@
                             <span id="cartShipping">$0.00</span>
                         </div>
                         <div class="summary-row">
-                            <span>Tax:</span>
+                            <span>Tax (10%):</span>
                             <span id="cartTax">$0.00</span>
                         </div>
                         <hr>
@@ -57,10 +582,10 @@
                             <span>Total:</span>
                             <span id="cartTotal">$0.00</span>
                         </div>
-                        <button class="btn btn-primary btn-lg btn-block" id="proceedCheckoutBtn">
+                        <button class="btn btn-primary btn-lg" id="proceedCheckoutBtn">
                             Proceed to Checkout
                         </button>
-                        <a href="products.html" class="btn btn-secondary btn-block">Continue Shopping</a>
+                        <a href="products.html" class="btn btn-secondary">Continue Shopping</a>
                     </div>
                 </div>
             </div>
@@ -71,28 +596,39 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h4>PowerBank Pro</h4>
-                    <p>Premium portable charging solutions for your digital life.</p>
+                    <h4>PowerHub</h4>
+                    <p>Premium portable charging solutions engineered for modern life.</p>
                 </div>
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul>
                         <li><a href="products.html">Products</a></li>
                         <li><a href="account.html">My Account</a></li>
-                        <li><a href="cart.html">Cart</a></li>
+                        <li><a href="cart.html">Shopping Cart</a></li>
+                        <li><a href="login.html">Login</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Support</h4>
+                    <h4>Customer Support</h4>
                     <ul>
                         <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Shipping Info</a></li>
-                        <li><a href="#">Returns</a></li>
+                        <li><a href="#">Shipping Information</a></li>
+                        <li><a href="#">Returns & Warranty</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Technology</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 PowerBank Pro. All rights reserved.</p>
+                <p>&copy; 2024 PowerHub. All rights reserved. Designed for the future.</p>
             </div>
         </div>
     </footer>
@@ -107,7 +643,7 @@
         document.getElementById('proceedCheckoutBtn').addEventListener('click', function() {
             const cart = getCart();
             if (cart.length === 0) {
-                showMessage('Your cart is empty', 'error');
+                alert('Your cart is empty');
                 return;
             }
             
@@ -116,6 +652,94 @@
                 window.location.href = 'checkout.html';
             }
         });
+
+        // Display cart function (placeholder - integrate with your cart system)
+        function displayCart() {
+            const cart = getCart();
+            const container = document.getElementById('cartItemsContainer');
+            
+            if (cart.length === 0) {
+                // Empty cart already shown in HTML
+                updateCartSummary(0, 0, 0);
+                return;
+            }
+
+            // Clear empty state
+            container.innerHTML = '';
+
+            let subtotal = 0;
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+
+                const cartItemHTML = `
+                    <div class="cart-item">
+                        <div class="cart-item-image">
+                            ${item.image ? `<img src="${item.image}" alt="${item.name}">` : '🔋'}
+                        </div>
+                        <div class="cart-item-details">
+                            <h3>${item.name}</h3>
+                            <p class="cart-item-description">${item.description || ''}</p>
+                            <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+                            <div class="cart-item-actions">
+                                <div class="cart-item-quantity">
+                                    <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">−</button>
+                                    <input type="number" class="quantity-input" value="${item.quantity}" readonly>
+                                    <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">+</button>
+                                </div>
+                                <button class="remove-item-btn" onclick="removeFromCart(${index})">Remove</button>
+                            </div>
+                        </div>
+                        <div class="cart-item-right">
+                            <div class="cart-item-total">$${itemTotal.toFixed(2)}</div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cartItemHTML;
+            });
+
+            const shipping = subtotal > 0 ? 10.00 : 0;
+            const tax = subtotal * 0.10;
+            updateCartSummary(subtotal, shipping, tax);
+        }
+
+        function updateCartSummary(subtotal, shipping, tax) {
+            const total = subtotal + shipping + tax;
+            document.getElementById('cartSubtotal').textContent = '$' + subtotal.toFixed(2);
+            document.getElementById('cartShipping').textContent = '$' + shipping.toFixed(2);
+            document.getElementById('cartTax').textContent = '$' + tax.toFixed(2);
+            document.getElementById('cartTotal').textContent = '$' + total.toFixed(2);
+        }
+
+        function updateQuantity(index, change) {
+            const cart = getCart();
+            cart[index].quantity += change;
+            
+            if (cart[index].quantity <= 0) {
+                cart.splice(index, 1);
+            }
+            
+            saveCart(cart);
+            displayCart();
+            updateCartBadge();
+        }
+
+        function removeFromCart(index) {
+            const cart = getCart();
+            cart.splice(index, 1);
+            saveCart(cart);
+            displayCart();
+            updateCartBadge();
+        }
+
+        function getCart() {
+            return JSON.parse(localStorage.getItem('cart') || '[]');
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem('cart', JSON.stringify(cart));
+        }
     </script>
 </body>
 </html>
