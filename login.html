@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PowerBank Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html" class="logo">PowerBank Pro</a>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="products.html">Products</a>
+                    <a href="cart.html" class="cart-link">
+                        Cart <span class="cart-badge" id="cartBadge">0</span>
+                    </a>
+                    <div id="authNav"></div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="auth-section">
+            <div class="container">
+                <div class="auth-container">
+                    <div class="auth-box">
+                        <div class="auth-header">
+                            <h1>Welcome Back</h1>
+                            <p class="auth-subtitle">Sign in to your PowerBank Pro account</p>
+                        </div>
+
+                        <form id="loginForm" class="auth-form">
+                            <div class="form-group">
+                                <label for="loginEmail">Email Address</label>
+                                <input 
+                                    type="email" 
+                                    id="loginEmail" 
+                                    name="email" 
+                                    required 
+                                    class="form-control" 
+                                    placeholder="you@example.com"
+                                    autocomplete="email"
+                                    aria-required="true">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="loginPassword">Password</label>
+                                <div class="password-input-wrapper">
+                                    <input 
+                                        type="password" 
+                                        id="loginPassword" 
+                                        name="password" 
+                                        required 
+                                        class="form-control" 
+                                        placeholder="Enter your password"
+                                        autocomplete="current-password"
+                                        aria-required="true">
+                                    <button 
+                                        type="button" 
+                                        class="password-toggle" 
+                                        id="loginPasswordToggle"
+                                        aria-label="Toggle password visibility">
+                                        <svg class="eye-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="remember" id="rememberMe">
+                                    <span>Remember me</span>
+                                </label>
+                                <a href="#" class="link-text">Forgot password?</a>
+                            </div>
+
+                            <div id="loginMessage" class="message" style="display:none;" role="alert"></div>
+
+                            <button type="submit" class="btn btn-primary btn-lg btn-block">
+                                Sign In
+                            </button>
+                        </form>
+
+                        <div class="auth-divider">
+                            <span>or</span>
+                        </div>
+
+                        <div class="auth-alternative">
+                            <p>Don't have an account? <a href="register.html" class="link-primary">Create one now</a></p>
+                        </div>
+
+                        <div class="auth-demo">
+                            <p class="demo-label">Demo Account</p>
+                            <div class="demo-credentials">
+                                <div class="demo-item">
+                                    <span class="demo-key">Email:</span>
+                                    <code class="demo-value">student@example.com</code>
+                                </div>
+                                <div class="demo-item">
+                                    <span class="demo-key">Password:</span>
+                                    <code class="demo-value">Password123!</code>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>PowerBank Pro</h4>
+                    <p>Premium portable charging solutions for your digital life.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="account.html">My Account</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Shipping Info</a></li>
+                        <li><a href="#">Returns</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PowerBank Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+        // Handle login form submission
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Signing in...';
+            
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            const result = await login(email, password);
+            
+            const messageEl = document.getElementById('loginMessage');
+            
+            if (result.success) {
+                messageEl.textContent = '✓ Login successful! Redirecting...';
+                messageEl.className = 'message message-success';
+                messageEl.style.display = 'block';
+                
+                // Redirect after successful login
+                setTimeout(() => {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const redirectUrl = urlParams.get('redirect') || 'account.html';
+                    window.location.href = redirectUrl;
+                }, 1000);
+            } else {
+                messageEl.textContent = '✕ ' + result.message;
+                messageEl.className = 'message message-error';
+                messageEl.style.display = 'block';
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        });
+
+        // Password toggle functionality
+        document.getElementById('loginPasswordToggle').addEventListener('click', function() {
+            const passwordInput = document.getElementById('loginPassword');
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+            
+            // Toggle icon
+            const icon = this.querySelector('.eye-icon');
+            if (isPassword) {
+                icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+            } else {
+                icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>';
+            }
+        });
+
+        // Auto-fill demo credentials on demo link click
+        document.querySelectorAll('.demo-value').forEach(el => {
+            el.addEventListener('click', function() {
+                const text = this.textContent;
+                if (text.includes('@')) {
+                    document.getElementById('loginEmail').value = text;
+                } else {
+                    document.getElementById('loginPassword').value = text;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

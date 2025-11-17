@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerBank Pro - Premium Portable Chargers</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html" class="logo">PowerBank Pro</a>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="products.html">Products</a>
+                    <a href="cart.html" class="cart-link">
+                        Cart <span class="cart-badge" id="cartBadge">0</span>
+                    </a>
+                    <div id="authNav"></div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Power Your Life On The Go</h1>
+                    <p>Premium portable chargers designed for modern lifestyles. Fast charging, lightweight, and reliable.</p>
+                    <a href="products.html" class="btn btn-primary btn-lg">Shop Now</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="container">
+                <h2>Why Choose PowerBank Pro?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Fast Charging</h3>
+                        <p>Advanced charging technology delivers power up to 3x faster than standard chargers.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔋</div>
+                        <h3>Long Lasting</h3>
+                        <p>High-capacity batteries keep your devices powered for days, not hours.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🛡️</div>
+                        <h3>Safe & Reliable</h3>
+                        <p>Built-in protection against overcharging, overheating, and short circuits.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">✈️</div>
+                        <h3>Travel Ready</h3>
+                        <p>Compact design and TSA-approved capacity for hassle-free travel.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="popular-products">
+            <div class="container">
+                <h2>Popular Products</h2>
+                <div class="products-grid" id="popularProducts">
+                    <!-- Products loaded via JS -->
+                </div>
+                <div class="text-center">
+                    <a href="products.html" class="btn btn-secondary">View All Products</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>PowerBank Pro</h4>
+                    <p>Premium portable charging solutions for your digital life.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="account.html">My Account</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Shipping Info</a></li>
+                        <li><a href="#">Returns</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PowerBank Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+        // Load popular products on home page
+        loadPopularProducts();
+    </script>
+</body>
+</html>

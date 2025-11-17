@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - PowerBank Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html" class="logo">PowerBank Pro</a>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="products.html">Products</a>
+                    <a href="cart.html" class="cart-link">
+                        Cart <span class="cart-badge" id="cartBadge">0</span>
+                    </a>
+                    <div id="authNav"></div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>Checkout</h1>
+            </div>
+        </section>
+
+        <section class="checkout-section">
+            <div class="container">
+                <div class="checkout-layout">
+                    <div class="checkout-form">
+                        <form id="checkoutForm">
+                            <div class="form-section">
+                                <h3>Shipping Information</h3>
+                                
+                                <div class="form-group">
+                                    <label for="fullName">Full Name *</label>
+                                    <input type="text" id="fullName" name="fullName" required class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="email">Email *</label>
+                                    <input type="email" id="email" name="email" required class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="phone">Phone Number *</label>
+                                    <input type="tel" id="phone" name="phone" required class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="address">Street Address *</label>
+                                    <input type="text" id="address" name="address" required class="form-control">
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="city">City *</label>
+                                        <input type="text" id="city" name="city" required class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="state">State *</label>
+                                        <input type="text" id="state" name="state" required class="form-control">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="zip">ZIP Code *</label>
+                                        <input type="text" id="zip" name="zip" required class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="country">Country *</label>
+                                        <select id="country" name="country" required class="form-control">
+                                            <option value="US">United States</option>
+                                            <option value="CA">Canada</option>
+                                            <option value="UK">United Kingdom</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-section">
+                                <h3>Payment Information</h3>
+                                
+                                <div class="form-group">
+                                    <label for="cardName">Name on Card *</label>
+                                    <input type="text" id="cardName" name="cardName" required class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="cardNumber">Card Number *</label>
+                                    <input type="text" id="cardNumber" name="cardNumber" 
+                                           placeholder="1234 5678 9012 3456" required class="form-control"
+                                           maxlength="19">
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="expiry">Expiry Date *</label>
+                                        <input type="text" id="expiry" name="expiry" 
+                                               placeholder="MM/YY" required class="form-control"
+                                               maxlength="5">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="cvv">CVV *</label>
+                                        <input type="text" id="cvv" name="cvv" 
+                                               placeholder="123" required class="form-control"
+                                               maxlength="4">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="checkoutMessage" class="message" style="display:none;"></div>
+
+                            <button type="submit" class="btn btn-primary btn-lg btn-block">
+                                Place Order
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="checkout-summary">
+                        <h3>Order Summary</h3>
+                        <div id="checkoutItems" class="checkout-items">
+                            <!-- Items loaded via JS -->
+                        </div>
+                        <hr>
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="checkoutSubtotal">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Shipping:</span>
+                            <span id="checkoutShipping">$10.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Tax:</span>
+                            <span id="checkoutTax">$0.00</span>
+                        </div>
+                        <hr>
+                        <div class="summary-row summary-total">
+                            <span>Total:</span>
+                            <span id="checkoutTotal">$0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>PowerBank Pro</h4>
+                    <p>Premium portable charging solutions for your digital life.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="account.html">My Account</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Shipping Info</a></li>
+                        <li><a href="#">Returns</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PowerBank Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+        // Protected page - require authentication
+        if (!requireAuth('checkout.html')) {
+            // User will be redirected to login
+        } else {
+            // Initialize checkout page
+            displayCheckoutSummary();
+            
+            // Pre-fill email from user account
+            const user = getCurrentUser();
+            if (user) {
+                document.getElementById('email').value = user.email;
+            }
+        }
+        
+        // Handle checkout form submission
+        document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            handleCheckoutSubmit();
+        });
+
+        // Format card number as user types
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formatted = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formatted;
+        });
+
+        // Format expiry date
+        document.getElementById('expiry').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html>

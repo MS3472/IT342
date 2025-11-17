@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - PowerBank Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html" class="logo">PowerBank Pro</a>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="products.html" class="active">Products</a>
+                    <a href="cart.html" class="cart-link">
+                        Cart <span class="cart-badge" id="cartBadge">0</span>
+                    </a>
+                    <div id="authNav"></div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>Our Products</h1>
+                <p>Find the perfect power solution for your needs</p>
+            </div>
+        </section>
+
+        <section class="products-section">
+            <div class="container">
+                <div class="products-layout">
+                    <aside class="filters-sidebar">
+                        <h3>Filters</h3>
+                        
+                        <div class="filter-group">
+                            <h4>Capacity</h4>
+                            <label class="filter-option">
+                                <input type="checkbox" name="capacity" value="10000" class="filter-checkbox">
+                                <span>10,000 mAh</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="capacity" value="20000" class="filter-checkbox">
+                                <span>20,000 mAh</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="capacity" value="30000" class="filter-checkbox">
+                                <span>30,000+ mAh</span>
+                            </label>
+                        </div>
+
+                        <div class="filter-group">
+                            <h4>Features</h4>
+                            <label class="filter-option">
+                                <input type="checkbox" name="feature" value="fast-charging" class="filter-checkbox">
+                                <span>Fast Charging</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="feature" value="wireless" class="filter-checkbox">
+                                <span>Wireless</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="feature" value="solar" class="filter-checkbox">
+                                <span>Solar Panel</span>
+                            </label>
+                        </div>
+
+                        <div class="filter-group">
+                            <h4>Price Range</h4>
+                            <label class="filter-option">
+                                <input type="radio" name="price" value="0-30" class="filter-radio">
+                                <span>Under $30</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="price" value="30-50" class="filter-radio">
+                                <span>$30 - $50</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="price" value="50-100" class="filter-radio">
+                                <span>$50 - $100</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="radio" name="price" value="100+" class="filter-radio">
+                                <span>$100+</span>
+                            </label>
+                        </div>
+
+                        <button class="btn btn-secondary btn-sm" id="clearFilters">Clear Filters</button>
+                    </aside>
+
+                    <div class="products-main">
+                        <div class="products-toolbar">
+                            <div class="products-count" id="productsCount">12 Products</div>
+                            <select id="sortSelect" class="sort-select">
+                                <option value="featured">Featured</option>
+                                <option value="price-low">Price: Low to High</option>
+                                <option value="price-high">Price: High to Low</option>
+                                <option value="name">Name: A-Z</option>
+                            </select>
+                        </div>
+
+                        <div class="products-grid" id="productsGrid">
+                            <!-- Products loaded via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>PowerBank Pro</h4>
+                    <p>Premium portable charging solutions for your digital life.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="account.html">My Account</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Shipping Info</a></li>
+                        <li><a href="#">Returns</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PowerBank Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+        // Initialize products page
+        loadAllProducts();
+        initializeFilters();
+    </script>
+</body>
+</html>

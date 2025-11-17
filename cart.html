@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - PowerBank Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="index.html" class="logo">PowerBank Pro</a>
+                <div class="nav-links">
+                    <a href="index.html">Home</a>
+                    <a href="products.html">Products</a>
+                    <a href="cart.html" class="cart-link active">
+                        Cart <span class="cart-badge" id="cartBadge">0</span>
+                    </a>
+                    <div id="authNav"></div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>Shopping Cart</h1>
+            </div>
+        </section>
+
+        <section class="cart-section">
+            <div class="container">
+                <div class="cart-layout">
+                    <div class="cart-items" id="cartItemsContainer">
+                        <!-- Cart items loaded via JS -->
+                    </div>
+
+                    <div class="cart-summary">
+                        <h3>Order Summary</h3>
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="cartSubtotal">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Shipping:</span>
+                            <span id="cartShipping">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Tax:</span>
+                            <span id="cartTax">$0.00</span>
+                        </div>
+                        <hr>
+                        <div class="summary-row summary-total">
+                            <span>Total:</span>
+                            <span id="cartTotal">$0.00</span>
+                        </div>
+                        <button class="btn btn-primary btn-lg btn-block" id="proceedCheckoutBtn">
+                            Proceed to Checkout
+                        </button>
+                        <a href="products.html" class="btn btn-secondary btn-block">Continue Shopping</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>PowerBank Pro</h4>
+                    <p>Premium portable charging solutions for your digital life.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="products.html">Products</a></li>
+                        <li><a href="account.html">My Account</a></li>
+                        <li><a href="cart.html">Cart</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <ul>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">Shipping Info</a></li>
+                        <li><a href="#">Returns</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PowerBank Pro. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script>
+        // Initialize cart page
+        displayCart();
+        
+        // Handle checkout button - requires authentication
+        document.getElementById('proceedCheckoutBtn').addEventListener('click', function() {
+            const cart = getCart();
+            if (cart.length === 0) {
+                showMessage('Your cart is empty', 'error');
+                return;
+            }
+            
+            // Check if user is authenticated before proceeding to checkout
+            if (requireAuth('checkout.html')) {
+                window.location.href = 'checkout.html';
+            }
+        });
+    </script>
+</body>
+</html>
