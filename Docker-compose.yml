@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: dockerfile
+    container_name: powerhub_app
+    ports:
+      - "8080:80"           # visit http://localhost:8080 in your browser
+    depends_on:
+      - db
+    environment:
+      # These are passed to PHP; we'll use them in includes/db.php
+      DB_HOST: db
+      DB_NAME: powerhub
+      DB_USER: powerhub_user
+      DB_PASS: powerhub_pass
+    volumes:
+      - .:/var/www/html     # so changes in VS Code update inside container
+    networks:
+      - powerhub_network
+
+  db:
+    image: mysql:8.0
+    container_name: powerhub_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: powerhub
+      MYSQL_USER: powerhub_user
+      MYSQL_PASSWORD: powerhub_pass
+    ports:
+      - "3306:3306"         # optional, only if you want to connect from host tools
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - powerhub_network
+
+networks:
+  powerhub_network:
+
+volumes:
+  db_data:

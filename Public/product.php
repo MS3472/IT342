@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -501,11 +504,11 @@
     <header class="header">
         <div class="container">
             <nav class="nav">
-                <a href="index.html" class="logo">PowerHub</a>
+                <a href="index.php" class="logo">PowerHub</a>
                 <div class="nav-links">
-                    <a href="index.html">Home</a>
-                    <a href="products.html">Products</a>
-                    <a href="cart.html" class="cart-link">
+                    <a href="index.php">Home</a>
+                    <a href="products.php">Products</a>
+                    <a href="cart.php" class="cart-link">
                         Cart <span class="cart-badge" id="cartBadge">0</span>
                     </a>
                     <div id="authNav"></div>
@@ -517,7 +520,7 @@
     <main>
         <section class="product-detail">
             <div class="container">
-                <a href="products.html" class="back-link">← Back to Products</a>
+                <a href="products.php" class="back-link">← Back to Products</a>
                 
                 <div class="product-detail-grid" id="productDetailContainer">
                     <!-- Default product shown - will be replaced by JS -->
@@ -591,7 +594,7 @@
                             <p class="product-description">Ultra-portable 10,000mAh power bank with sleek design</p>
                             <div class="product-footer">
                                 <span class="product-price">$49.99</span>
-                                <a href="product.html" class="view-btn">View Details</a>
+                                <a href="product.php" class="view-btn">View Details</a>
                             </div>
                         </div>
                     </div>
@@ -605,7 +608,7 @@
                             <p class="product-description">Maximum 30,000mAh capacity with 100W output power</p>
                             <div class="product-footer">
                                 <span class="product-price">$129.99</span>
-                                <a href="product.html" class="view-btn">View Details</a>
+                                <a href="product.php" class="view-btn">View Details</a>
                             </div>
                         </div>
                     </div>
@@ -619,7 +622,7 @@
                             <p class="product-description">15,000mAh with Quick Charge 4.0 technology</p>
                             <div class="product-footer">
                                 <span class="product-price">$69.99</span>
-                                <a href="product.html" class="view-btn">View Details</a>
+                                <a href="product.php" class="view-btn">View Details</a>
                             </div>
                         </div>
                     </div>
@@ -638,10 +641,10 @@
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="products.html">Products</a></li>
-                        <li><a href="account.html">My Account</a></li>
-                        <li><a href="cart.html">Shopping Cart</a></li>
-                        <li><a href="login.html">Login</a></li>
+                        <li><a href="products.php">Products</a></li>
+                        <li><a href="account.php">My Account</a></li>
+                        <li><a href="cart.php">Shopping Cart</a></li>
+                        <li><a href="login.php">Login</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">

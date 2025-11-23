@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -633,18 +636,18 @@
     <header class="header" id="header">
         <div class="container">
             <nav class="nav">
-                <a href="index.html" class="logo">PowerHub</a>
+                <a href="index.php" class="logo">PowerHub</a>
                 <div class="menu-toggle" id="menuToggle">
                     <span></span>
                     <span></span>
                     <span></span>
                 </div>
                 <div class="nav-links" id="navLinks">
-                    <a href="index.html">Home</a>
-                    <a href="products.html">Products</a>
-                    <a href="login.html">Login</a>
-                    <a href="register.html">Register</a>
-                    <a href="cart.html" class="cart-link">
+                    <a href="index.php">Home</a>
+                    <a href="products.php">Products</a>
+                    <a href="login.php">Login</a>
+                    <a href="register.php">Register</a>
+                    <a href="cart.php" class="cart-link">
                         Cart <span class="cart-badge" id="cartBadge">0</span>
                     </a>
                     <div id="authNav"></div>
@@ -659,7 +662,7 @@
                 <div class="hero-content">
                     <h1>Power Up Your Life</h1>
                     <p>Fast, reliable, modern charging solutions for the digital age. Experience premium portable power that keeps you connected anywhere, anytime.</p>
-                    <a href="products.html" class="btn btn-primary">Shop Now</a>
+                    <a href="products.php" class="btn btn-primary">Shop Now</a>
                 </div>
             </div>
         </section>
@@ -737,7 +740,7 @@
                 </div>
 
                 <div class="text-center">
-                    <a href="products.html" class="btn btn-secondary">View All Products</a>
+                    <a href="products.php" class="btn btn-secondary">View All Products</a>
                 </div>
             </div>
         </section>
@@ -747,7 +750,7 @@
                 <div class="promo-content">
                     <h2>🚀 New Launch: UltraCharge Pro 20K</h2>
                     <p>Experience next-generation charging technology. Now available with 25% launch discount!</p>
-                    <a href="products.html" class="btn btn-primary">Shop Now</a>
+                    <a href="products.php" class="btn btn-primary">Shop Now</a>
                 </div>
             </div>
         </div>
@@ -763,10 +766,10 @@
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="products.html">Products</a></li>
-                        <li><a href="account.html">My Account</a></li>
-                        <li><a href="cart.html">Shopping Cart</a></li>
-                        <li><a href="login.html">Login</a></li>
+                        <li><a href="products.php">Products</a></li>
+                        <li><a href="account.php">My Account</a></li>
+                        <li><a href="cart.php">Shopping Cart</a></li>
+                        <li><a href="login.php">Login</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -828,7 +831,7 @@
                 const productName = e.target.closest('.product-card').querySelector('h3').textContent;
                 console.log('Viewing product:', productName);
                 // Redirect to product detail page or add to cart
-                // window.location.href = 'products.html';
+                // window.location.href = 'products.php';
             });
         });
 

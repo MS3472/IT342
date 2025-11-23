@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/styles.css">
     <style>
-        /* Copy the entire CSS from index.html plus additional styles for products page */
+        /* Copy the entire CSS from index.php plus additional styles for products page */
         * {
             margin: 0;
             padding: 0;
@@ -462,11 +465,11 @@
     <header class="header" id="header">
         <div class="container">
             <nav class="nav">
-                <a href="index.html" class="logo">PowerHub</a>
+                <a href="index.php" class="logo">PowerHub</a>
                 <div class="nav-links">
-                    <a href="index.html">Home</a>
-                    <a href="products.html" class="active">Products</a>
-                    <a href="cart.html" class="cart-link">
+                    <a href="index.php">Home</a>
+                    <a href="products.php" class="active">Products</a>
+                    <a href="cart.php" class="cart-link">
                         Cart <span class="cart-badge" id="cartBadge">0</span>
                     </a>
                     <div id="authNav"></div>
@@ -587,10 +590,10 @@
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="products.html">Products</a></li>
-                        <li><a href="account.html">My Account</a></li>
-                        <li><a href="cart.html">Shopping Cart</a></li>
-                        <li><a href="login.html">Login</a></li>
+                        <li><a href="products.php">Products</a></li>
+                        <li><a href="account.php">My Account</a></li>
+                        <li><a href="cart.php">Shopping Cart</a></li>
+                        <li><a href="login.php">Login</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">

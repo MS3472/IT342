@@ -1,3 +1,17 @@
+<?php
+session_start();
+
+// Try to include auth.php - check if user is logged in
+$auth_file = __DIR__ . '/../Include/auth.php';
+if (file_exists($auth_file)) {
+    require_once $auth_file;
+} else {
+    // Fallback function if auth.php doesn't exist
+    function is_logged_in() {
+        return isset($_SESSION['user_id']);
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -421,9 +435,142 @@
             font-size: 17px;
         }
 
-        .btn-block {
-            display: block;
+        /* Auth Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: var(--dark-card);
+            border: 1px solid rgba(0, 217, 255, 0.3);
+            border-radius: 24px;
+            padding: 50px 40px;
+            max-width: 480px;
+            width: 90%;
+            box-shadow: 0 30px 80px rgba(0, 217, 255, 0.3);
+            position: relative;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .modal-close:hover {
+            background: rgba(0, 217, 255, 0.1);
+            color: var(--primary-cyan);
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .modal-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 28px;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 12px;
+        }
+
+        .modal-header p {
+            color: var(--text-secondary);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .modal-btn {
+            padding: 18px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+
+        .modal-btn-primary {
+            background: var(--gradient-2);
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.3);
+        }
+
+        .modal-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 40px rgba(0, 217, 255, 0.5);
+        }
+
+        .modal-btn-secondary {
+            background: transparent;
+            color: var(--primary-cyan);
+            border: 2px solid var(--primary-cyan);
+        }
+
+        .modal-btn-secondary:hover {
+            background: rgba(0, 217, 255, 0.1);
         }
 
         /* Footer */
@@ -509,6 +656,10 @@
             .nav-links {
                 gap: 20px;
             }
+
+            .modal-content {
+                padding: 40px 30px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -527,14 +678,19 @@
     <header class="header">
         <div class="container">
             <nav class="nav">
-                <a href="index.html" class="logo">PowerHub</a>
+                <a href="index.php" class="logo">PowerHub</a>
                 <div class="nav-links">
-                    <a href="index.html">Home</a>
-                    <a href="products.html">Products</a>
-                    <a href="cart.html" class="cart-link active">
+                    <a href="index.php">Home</a>
+                    <a href="products.php">Products</a>
+                    <?php if (is_logged_in()): ?>
+                        <a href="account.php">My Account</a>
+                    <?php else: ?>
+                        <a href="login.php">Login</a>
+                        <a href="register.php">Register</a>
+                    <?php endif; ?>
+                    <a href="cart.php" class="cart-link active">
                         Cart <span class="cart-badge" id="cartBadge">0</span>
                     </a>
-                    <div id="authNav"></div>
                 </div>
             </nav>
         </div>
@@ -558,7 +714,7 @@
                                 <div class="empty-cart-icon">🛒</div>
                                 <h2>Your cart is empty</h2>
                                 <p>Add some amazing power banks to get started!</p>
-                                <a href="products.html" class="btn btn-primary">Browse Products</a>
+                                <a href="products.php" class="btn btn-primary">Browse Products</a>
                             </div>
                         </div>
                     </div>
@@ -585,12 +741,32 @@
                         <button class="btn btn-primary btn-lg" id="proceedCheckoutBtn">
                             Proceed to Checkout
                         </button>
-                        <a href="products.html" class="btn btn-secondary">Continue Shopping</a>
+                        <a href="products.php" class="btn btn-secondary">Continue Shopping</a>
                     </div>
                 </div>
             </div>
         </section>
     </main>
+
+    <!-- Authentication Required Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeAuthModal()">&times;</button>
+            <div class="modal-header">
+                <div class="modal-icon">🔒</div>
+                <h2>Login Required</h2>
+                <p>Please log in or create an account to proceed with checkout. It only takes a minute!</p>
+            </div>
+            <div class="modal-actions">
+                <a href="login.php?redirect=checkout.php" class="modal-btn modal-btn-primary">
+                    🚀 Login to Continue
+                </a>
+                <a href="register.php?redirect=checkout.php" class="modal-btn modal-btn-secondary">
+                    ✨ Create New Account
+                </a>
+            </div>
+        </div>
+    </div>
 
     <footer class="footer">
         <div class="container">
@@ -602,10 +778,10 @@
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="products.html">Products</a></li>
-                        <li><a href="account.html">My Account</a></li>
-                        <li><a href="cart.html">Shopping Cart</a></li>
-                        <li><a href="login.html">Login</a></li>
+                        <li><a href="products.php">Products</a></li>
+                        <li><a href="account.php">My Account</a></li>
+                        <li><a href="cart.php">Shopping Cart</a></li>
+                        <li><a href="login.php">Login</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -636,6 +812,9 @@
     <script src="assets/js/auth.js"></script>
     <script src="assets/js/main.js"></script>
     <script>
+        // Check if user is logged in (PHP-based)
+        const isUserLoggedIn = <?php echo is_logged_in() ? 'true' : 'false'; ?>;
+        
         // Initialize cart page
         displayCart();
         
@@ -647,26 +826,51 @@
                 return;
             }
             
-            // Check if user is authenticated before proceeding to checkout
-            if (requireAuth('checkout.html')) {
-                window.location.href = 'checkout.html';
+            // Check if user is logged in
+            if (!isUserLoggedIn) {
+                // Show authentication modal
+                showAuthModal();
+            } else {
+                // Proceed to checkout
+                window.location.href = 'checkout.php';
             }
         });
 
-        // Display cart function (placeholder - integrate with your cart system)
+        function showAuthModal() {
+            document.getElementById('authModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('authModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAuthModal();
+            }
+        });
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeAuthModal();
+            }
+        });
+
+        // Display cart function
         function displayCart() {
             const cart = getCart();
             const container = document.getElementById('cartItemsContainer');
             
             if (cart.length === 0) {
-                // Empty cart already shown in HTML
                 updateCartSummary(0, 0, 0);
                 return;
             }
 
-            // Clear empty state
             container.innerHTML = '';
-
             let subtotal = 0;
 
             cart.forEach((item, index) => {

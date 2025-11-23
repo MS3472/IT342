@@ -1,3 +1,22 @@
+<?php
+session_start();
+
+// Include authentication functions
+$auth_file = __DIR__ . '/../Include/auth.php';
+if (!file_exists($auth_file)) {
+    // If auth.php doesn't exist, redirect to login
+    header('Location: /Public/login.php');
+    exit;
+}
+
+require_once $auth_file;
+
+// Require user to be logged in to access checkout
+require_login();
+
+// Get current user data
+$user = get_current_user();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -131,6 +150,17 @@
             background-clip: text;
         }
 
+        .user-welcome {
+            margin-top: 15px;
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        .user-welcome span {
+            color: var(--primary-cyan);
+            font-weight: 600;
+        }
+
         /* Checkout Section */
         .checkout-section {
             padding: 60px 0 120px;
@@ -195,6 +225,11 @@
 
         .form-control::placeholder {
             color: var(--text-secondary);
+        }
+
+        .form-control:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
 
         select.form-control {
@@ -447,14 +482,15 @@
     <header class="header">
         <div class="container">
             <nav class="nav">
-                <a href="index.html" class="logo">PowerHub</a>
+                <a href="index.php" class="logo">PowerHub</a>
                 <div class="nav-links">
-                    <a href="index.html">Home</a>
-                    <a href="products.html">Products</a>
-                    <a href="cart.html" class="cart-link">
+                    <a href="index.php">Home</a>
+                    <a href="products.php">Products</a>
+                    <a href="account.php">My Account</a>
+                    <a href="cart.php" class="cart-link">
                         Cart <span class="cart-badge" id="cartBadge">0</span>
                     </a>
-                    <div id="authNav"></div>
+                    <a href="/logout.php" style="color: var(--error-color);">Logout</a>
                 </div>
             </nav>
         </div>
@@ -463,7 +499,8 @@
     <main>
         <section class="page-header">
             <div class="container">
-                <h1>Checkout</h1>
+                <h1>Secure Checkout</h1>
+                <p class="user-welcome">Welcome, <span><?php echo htmlspecialchars($user['name']); ?></span>! Complete your order below.</p>
             </div>
         </section>
 
@@ -477,12 +514,16 @@
                                 
                                 <div class="form-group">
                                     <label for="fullName">Full Name *</label>
-                                    <input type="text" id="fullName" name="fullName" required class="form-control" placeholder="John Doe">
+                                    <input type="text" id="fullName" name="fullName" required class="form-control" 
+                                           value="<?php echo htmlspecialchars($user['name']); ?>" placeholder="John Doe">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="email">Email Address *</label>
-                                    <input type="email" id="email" name="email" required class="form-control" placeholder="john@example.com">
+                                    <input type="email" id="email" name="email" required class="form-control" 
+                                           value="<?php echo htmlspecialchars($user['email']); ?>" 
+                                           placeholder="john@example.com" disabled>
+                                    <input type="hidden" name="user_email" value="<?php echo htmlspecialchars($user['email']); ?>">
                                 </div>
 
                                 <div class="form-group">
@@ -528,7 +569,8 @@
                                 
                                 <div class="form-group">
                                     <label for="cardName">Name on Card *</label>
-                                    <input type="text" id="cardName" name="cardName" required class="form-control" placeholder="John Doe">
+                                    <input type="text" id="cardName" name="cardName" required class="form-control" 
+                                           value="<?php echo htmlspecialchars($user['name']); ?>" placeholder="John Doe">
                                 </div>
 
                                 <div class="form-group">
@@ -557,7 +599,7 @@
                             <div id="checkoutMessage" class="message"></div>
 
                             <button type="submit" class="btn btn-primary btn-lg btn-block">
-                                💳 Place Order
+                                💳 Place Order Securely
                             </button>
                         </form>
                     </div>
@@ -601,10 +643,10 @@
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="products.html">Products</a></li>
-                        <li><a href="account.html">My Account</a></li>
-                        <li><a href="cart.html">Shopping Cart</a></li>
-                        <li><a href="login.html">Login</a></li>
+                        <li><a href="products.php">Products</a></li>
+                        <li><a href="account.php">My Account</a></li>
+                        <li><a href="cart.php">Shopping Cart</a></li>
+                        <li><a href="login.php">Login</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -632,23 +674,10 @@
         </div>
     </footer>
 
-    <script src="assets/js/auth.js"></script>
     <script src="assets/js/main.js"></script>
     <script>
-        // Protected page - require authentication
-        if (!requireAuth('checkout.html')) {
-            // User will be redirected to login
-        } else {
-            // Initialize checkout page
-            displayCheckoutSummary();
-            
-            // Pre-fill email from user account
-            const user = getCurrentUser();
-            if (user) {
-                document.getElementById('email').value = user.email;
-                document.getElementById('fullName').value = user.name || '';
-            }
-        }
+        // Initialize checkout page (user is already authenticated)
+        displayCheckoutSummary();
         
         // Display checkout summary
         function displayCheckoutSummary() {
@@ -656,7 +685,7 @@
             const container = document.getElementById('checkoutItems');
             
             if (cart.length === 0) {
-                window.location.href = 'cart.html';
+                window.location.href = 'cart.php';
                 return;
             }
 
@@ -710,13 +739,13 @@
                 updateCartBadge();
                 
                 // Show success message
-                messageEl.textContent = '✓ Order placed successfully! Redirecting...';
+                messageEl.textContent = '✓ Order placed successfully! Redirecting to your account...';
                 messageEl.className = 'message message-success';
                 messageEl.style.display = 'block';
                 
                 // Redirect to account page
                 setTimeout(() => {
-                    window.location.href = 'account.html';
+                    window.location.href = 'account.php';
                 }, 2000);
             }, 2000);
         }
