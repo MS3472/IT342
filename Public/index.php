@@ -1,5 +1,12 @@
 <?php
+// Start session FIRST before calling any auth functions
 session_start();
+
+// Now include auth functions
+require_once __DIR__ . '/../Include/auth.php';
+
+// Get logged-in user
+$user = get_logged_in_user();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -114,6 +121,35 @@ session_start();
 
         .nav-links a:hover::after {
             width: 100%;
+        }
+
+        .user-greeting {
+            color: var(--primary-cyan) !important;
+            font-weight: 600;
+            white-space: nowrap;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(0, 217, 255, 0.1);
+            transition: all 0.3s ease;
+            text-decoration: none !important;
+        }
+
+        .user-greeting:hover {
+            background: rgba(0, 217, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 217, 255, 0.3);
+        }
+
+        .user-greeting::after {
+            display: none;
+        }
+
+        .logout-link {
+            color: #ff6b6b !important;
+        }
+
+        .logout-link:hover {
+            color: #ff5252 !important;
         }
 
         .cart-link {
@@ -563,12 +599,43 @@ session_start();
             text-align: center;
         }
 
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-cyan);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
         /* Responsive */
-        @media (max-width: 768px) {
+        @media (max-width: 968px) {
+            .menu-toggle {
+                display: flex;
+            }
+
             .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(10, 14, 39, 0.98);
+                flex-direction: column;
+                padding: 20px;
+                display: none;
+                border-bottom: 1px solid rgba(0, 217, 255, 0.1);
                 gap: 20px;
-                flex-wrap: wrap;
-                justify-content: center;
+            }
+
+            .nav-links.active {
+                display: flex;
             }
 
             .hero h1 {
@@ -592,65 +659,34 @@ session_start();
                 font-size: 28px;
             }
         }
-
-        /* Mobile Menu Toggle */
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            gap: 5px;
-        }
-
-        .menu-toggle span {
-            width: 25px;
-            height: 3px;
-            background: var(--primary-cyan);
-            border-radius: 3px;
-            transition: all 0.3s ease;
-        }
-
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: flex;
-            }
-
-            .nav-links {
-                position: absolute;
-                top: 100%;
-                left: 0;
-                right: 0;
-                background: rgba(10, 14, 39, 0.98);
-                flex-direction: column;
-                padding: 20px;
-                display: none;
-                border-bottom: 1px solid rgba(0, 217, 255, 0.1);
-            }
-
-            .nav-links.active {
-                display: flex;
-            }
-        }
     </style>
 </head>
 <body>
     <header class="header" id="header">
         <div class="container">
             <nav class="nav">
-                <a href="index.php" class="logo">PowerHub</a>
+                <a href="/Public/index.php" class="logo">PowerHub</a>
                 <div class="menu-toggle" id="menuToggle">
                     <span></span>
                     <span></span>
                     <span></span>
                 </div>
                 <div class="nav-links" id="navLinks">
-                    <a href="index.php">Home</a>
-                    <a href="products.php">Products</a>
-                    <a href="login.php">Login</a>
-                    <a href="register.php">Register</a>
-                    <a href="cart.php" class="cart-link">
+                    <a href="/Public/index.php">Home</a>
+                    <a href="/Public/products.php">Products</a>
+                    <a href="/Public/cart.php" class="cart-link">
                         Cart <span class="cart-badge" id="cartBadge">0</span>
                     </a>
-                    <div id="authNav"></div>
+                    
+                    <?php if ($user): ?>
+                        <a href="/Public/account.php" class="user-greeting">
+                            Hello, <?= htmlspecialchars($user['name']) ?> 👤
+                        </a>
+                        <a href="/Public/logout.php" class="logout-link">Logout</a>
+                    <?php else: ?>
+                        <a href="/Public/login.php">Login</a>
+                        <a href="/Public/register.php">Register</a>
+                    <?php endif; ?>
                 </div>
             </nav>
         </div>
@@ -662,7 +698,7 @@ session_start();
                 <div class="hero-content">
                     <h1>Power Up Your Life</h1>
                     <p>Fast, reliable, modern charging solutions for the digital age. Experience premium portable power that keeps you connected anywhere, anytime.</p>
-                    <a href="products.php" class="btn btn-primary">Shop Now</a>
+                    <a href="/Public/products.php" class="btn btn-primary">Shop Now</a>
                 </div>
             </div>
         </section>
@@ -708,7 +744,7 @@ session_start();
                             <h3>UltraCharge Pro 20K</h3>
                             <p>20,000mAh powerhouse with 65W fast charging, USB-C PD 3.0, and wireless charging pad. Perfect for laptops and phones.</p>
                             <div class="product-price">$89.99</div>
-                            <button class="product-btn">View Product</button>
+                            <button class="product-btn" onclick="window.location.href='/Public/products.php'">View Product</button>
                         </div>
                     </div>
 
@@ -721,7 +757,7 @@ session_start();
                             <h3>SlimCharge Mini 10K</h3>
                             <p>Ultra-portable 10,000mAh power bank with sleek aluminum body. Pocket-sized power for everyday carry.</p>
                             <div class="product-price">$49.99</div>
-                            <button class="product-btn">View Product</button>
+                            <button class="product-btn" onclick="window.location.href='/Public/products.php'">View Product</button>
                         </div>
                     </div>
 
@@ -734,13 +770,13 @@ session_start();
                             <h3>MegaCharge Elite 30K</h3>
                             <p>Maximum capacity 30,000mAh with 100W output. Charge laptops, tablets, phones simultaneously with smart power distribution.</p>
                             <div class="product-price">$129.99</div>
-                            <button class="product-btn">View Product</button>
+                            <button class="product-btn" onclick="window.location.href='/Public/products.php'">View Product</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="text-center">
-                    <a href="products.php" class="btn btn-secondary">View All Products</a>
+                    <a href="/Public/products.php" class="btn btn-secondary">View All Products</a>
                 </div>
             </div>
         </section>
@@ -750,7 +786,7 @@ session_start();
                 <div class="promo-content">
                     <h2>🚀 New Launch: UltraCharge Pro 20K</h2>
                     <p>Experience next-generation charging technology. Now available with 25% launch discount!</p>
-                    <a href="products.php" class="btn btn-primary">Shop Now</a>
+                    <a href="/Public/products.php" class="btn btn-primary">Shop Now</a>
                 </div>
             </div>
         </div>
@@ -766,10 +802,10 @@ session_start();
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="products.php">Products</a></li>
-                        <li><a href="account.php">My Account</a></li>
-                        <li><a href="cart.php">Shopping Cart</a></li>
-                        <li><a href="login.php">Login</a></li>
+                        <li><a href="/Public/products.php">Products</a></li>
+                        <li><a href="/Public/account.php">My Account</a></li>
+                        <li><a href="/Public/cart.php">Shopping Cart</a></li>
+                        <li><a href="/Public/login.php">Login</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -816,38 +852,16 @@ session_start();
             navLinks.classList.toggle('active');
         });
 
-        // Load cart count (placeholder - integrate with your cart system)
+        // Load cart count
         function updateCartBadge() {
             const cartBadge = document.getElementById('cartBadge');
-            // Replace with actual cart logic
-            const cartCount = 0; // Get from localStorage or your cart system
-            cartBadge.textContent = cartCount;
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+            cartBadge.textContent = totalItems;
         }
-
-        // Product button click handlers
-        const productButtons = document.querySelectorAll('.product-btn');
-        productButtons.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const productName = e.target.closest('.product-card').querySelector('h3').textContent;
-                console.log('Viewing product:', productName);
-                // Redirect to product detail page or add to cart
-                // window.location.href = 'products.php';
-            });
-        });
 
         // Initialize
         updateCartBadge();
-
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        });
     </script>
 </body>
 </html>

@@ -1,11 +1,15 @@
 /**
- * Authentication JavaScript
- * Handles login and registration form submissions
+ * PowerHub Authentication JavaScript
+ * Location: Public/assets/js/auth.js
+ * 
+ * Handles login and registration form submissions via fetch API
  */
 
 document.addEventListener('DOMContentLoaded', function() {
     
-    // Handle Login Form
+    // ===================================
+    // LOGIN FORM HANDLER
+    // ===================================
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
         loginForm.addEventListener('submit', function(e) {
@@ -37,7 +41,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
+            .then(response => {
+                // Check if response is JSON
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error('Server did not return JSON');
+                }
+                return response.json();
+            })
             .then(data => {
                 // Re-enable submit button
                 submitButton.disabled = false;
@@ -69,7 +80,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Handle Register Form
+    // ===================================
+    // REGISTER FORM HANDLER
+    // ===================================
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
         registerForm.addEventListener('submit', function(e) {
@@ -103,7 +116,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.json())
+            .then(response => {
+                // Check if response is JSON
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error('Server did not return JSON');
+                }
+                return response.json();
+            })
             .then(data => {
                 // Re-enable submit button
                 submitButton.disabled = false;

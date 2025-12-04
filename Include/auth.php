@@ -1,75 +1,64 @@
 <?php
 /**
- * Authentication System for PowerHub E-commerce
- * Handles user registration, login, logout, and access control
+ * PowerHub Authentication System
+ * Location: Include/auth.php
+ * 
+ * This file contains all authentication functions for the PowerHub e-commerce system.
+ * No HTML output - only returns arrays with success/failure status.
  */
 
-require_once __DIR__ . '/db.php';
+// Prevent direct access
+if (!defined('AUTH_INCLUDED')) {
+    define('AUTH_INCLUDED', true);
+}
 
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Include database connection
+require_once __DIR__ . '/db.php';
+
 /**
  * Register a new user
  * 
  * @param string $name User's full name
  * @param string $email User's email address
- * @param string $password User's password
- * @param string $role User role (customer or admin)
- * @return array Response with success status and message
+ * @param string $password User's password (will be hashed)
+ * @param string $role User role: 'customer' or 'admin'
+ * @return array ['success' => bool, 'message' => string]
  */
 function register_user($name, $email, $password, $role = 'customer') {
-    // Validate input fields
-    if (empty(trim($name))) {
-        return [
-            'success' => false,
-            'message' => 'Name is required'
-        ];
+    // Validate name
+    $name = trim($name);
+    if (empty($name)) {
+        return ['success' => false, 'message' => 'Name is required'];
+    }
+    if (strlen($name) < 2) {
+        return ['success' => false, 'message' => 'Name must be at least 2 characters'];
     }
     
-    if (strlen(trim($name)) < 2) {
-        return [
-            'success' => false,
-            'message' => 'Name must be at least 2 characters'
-        ];
+    // Validate email
+    $email = trim($email);
+    if (empty($email)) {
+        return ['success' => false, 'message' => 'Email is required'];
     }
-    
-    if (empty(trim($email))) {
-        return [
-            'success' => false,
-            'message' => 'Email is required'
-        ];
-    }
-    
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        return [
-            'success' => false,
-            'message' => 'Invalid email format'
-        ];
+        return ['success' => false, 'message' => 'Invalid email format'];
     }
     
+    // Validate password
     if (empty($password)) {
-        return [
-            'success' => false,
-            'message' => 'Password is required'
-        ];
+        return ['success' => false, 'message' => 'Password is required'];
     }
-    
     if (strlen($password) < 6) {
-        return [
-            'success' => false,
-            'message' => 'Password must be at least 6 characters'
-        ];
+        return ['success' => false, 'message' => 'Password must be at least 6 characters'];
     }
     
     // Validate role
     if (!in_array($role, ['customer', 'admin'])) {
-        return [
-            'success' => false,
-            'message' => 'Invalid role specified'
-        ];
+        return ['success' => false, 'message' => 'Invalid role specified'];
     }
     
     try {
@@ -78,10 +67,8 @@ function register_user($name, $email, $password, $role = 'customer') {
         // Check if email already exists
         $stmt = $db->prepare("SELECT id FROM users WHERE email = ?");
         if (!$stmt) {
-            return [
-                'success' => false,
-                'message' => 'Database error: ' . $db->error
-            ];
+            error_log("Register prepare failed: " . $db->error);
+            return ['success' => false, 'message' => 'Database error occurred'];
         }
         
         $stmt->bind_param("s", $email);
@@ -90,33 +77,26 @@ function register_user($name, $email, $password, $role = 'customer') {
         
         if ($stmt->num_rows > 0) {
             $stmt->close();
-            return [
-                'success' => false,
-                'message' => 'Email already registered'
-            ];
+            return ['success' => false, 'message' => 'Email already registered'];
         }
         $stmt->close();
         
-        // Hash the password
+        // Hash password
         $password_hash = password_hash($password, PASSWORD_DEFAULT);
         
         // Insert new user
         $stmt = $db->prepare("INSERT INTO users (name, email, password_hash, role) VALUES (?, ?, ?, ?)");
         if (!$stmt) {
-            return [
-                'success' => false,
-                'message' => 'Database error: ' . $db->error
-            ];
+            error_log("Register insert prepare failed: " . $db->error);
+            return ['success' => false, 'message' => 'Database error occurred'];
         }
         
         $stmt->bind_param("ssss", $name, $email, $password_hash, $role);
         
         if (!$stmt->execute()) {
+            error_log("Register execute failed: " . $stmt->error);
             $stmt->close();
-            return [
-                'success' => false,
-                'message' => 'Registration failed: ' . $stmt->error
-            ];
+            return ['success' => false, 'message' => 'Registration failed'];
         }
         
         $user_id = $db->insert_id;
@@ -124,20 +104,15 @@ function register_user($name, $email, $password, $role = 'customer') {
         
         // Set session variables
         $_SESSION['user_id'] = $user_id;
-        $_SESSION['user_name'] = trim($name);
+        $_SESSION['user_name'] = $name;
         $_SESSION['user_email'] = $email;
         $_SESSION['user_role'] = $role;
         
-        return [
-            'success' => true,
-            'message' => 'Registration successful'
-        ];
+        return ['success' => true, 'message' => 'Registration successful'];
         
     } catch (Exception $e) {
-        return [
-            'success' => false,
-            'message' => 'An error occurred during registration'
-        ];
+        error_log("Register exception: " . $e->getMessage());
+        return ['success' => false, 'message' => 'An error occurred during registration'];
     }
 }
 
@@ -146,29 +121,21 @@ function register_user($name, $email, $password, $role = 'customer') {
  * 
  * @param string $email User's email address
  * @param string $password User's password
- * @return array Response with success status and message
+ * @return array ['success' => bool, 'message' => string]
  */
 function login_user($email, $password) {
-    // Validate input
-    if (empty(trim($email))) {
-        return [
-            'success' => false,
-            'message' => 'Email is required'
-        ];
+    // Validate email
+    $email = trim($email);
+    if (empty($email)) {
+        return ['success' => false, 'message' => 'Email is required'];
     }
-    
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        return [
-            'success' => false,
-            'message' => 'Invalid email format'
-        ];
+        return ['success' => false, 'message' => 'Invalid email format'];
     }
     
+    // Validate password
     if (empty($password)) {
-        return [
-            'success' => false,
-            'message' => 'Password is required'
-        ];
+        return ['success' => false, 'message' => 'Password is required'];
     }
     
     try {
@@ -177,10 +144,8 @@ function login_user($email, $password) {
         // Retrieve user from database
         $stmt = $db->prepare("SELECT id, name, email, password_hash, role FROM users WHERE email = ?");
         if (!$stmt) {
-            return [
-                'success' => false,
-                'message' => 'Database error: ' . $db->error
-            ];
+            error_log("Login prepare failed: " . $db->error);
+            return ['success' => false, 'message' => 'Database error occurred'];
         }
         
         $stmt->bind_param("s", $email);
@@ -189,10 +154,7 @@ function login_user($email, $password) {
         
         if ($result->num_rows === 0) {
             $stmt->close();
-            return [
-                'success' => false,
-                'message' => 'Invalid email or password'
-            ];
+            return ['success' => false, 'message' => 'Invalid email or password'];
         }
         
         $user = $result->fetch_assoc();
@@ -200,10 +162,7 @@ function login_user($email, $password) {
         
         // Verify password
         if (!password_verify($password, $user['password_hash'])) {
-            return [
-                'success' => false,
-                'message' => 'Invalid email or password'
-            ];
+            return ['success' => false, 'message' => 'Invalid email or password'];
         }
         
         // Set session variables
@@ -212,16 +171,11 @@ function login_user($email, $password) {
         $_SESSION['user_email'] = $user['email'];
         $_SESSION['user_role'] = $user['role'];
         
-        return [
-            'success' => true,
-            'message' => 'Login successful'
-        ];
+        return ['success' => true, 'message' => 'Login successful'];
         
     } catch (Exception $e) {
-        return [
-            'success' => false,
-            'message' => 'An error occurred during login'
-        ];
+        error_log("Login exception: " . $e->getMessage());
+        return ['success' => false, 'message' => 'An error occurred during login'];
     }
 }
 
@@ -248,11 +202,12 @@ function logout_user() {
  * Require user to be logged in
  * Redirects to login page if not authenticated
  * 
+ * @param string $redirect_url URL to redirect to if not logged in
  * @return void
  */
-function require_login() {
+function require_login($redirect_url = '/Public/login.php') {
     if (!isset($_SESSION['user_id'])) {
-        header('Location: /Public/login.php');
+        header('Location: ' . $redirect_url);
         exit;
     }
 }
@@ -261,11 +216,12 @@ function require_login() {
  * Require user to be logged in as admin
  * Redirects to login page if not authenticated or not admin
  * 
+ * @param string $redirect_url URL to redirect to if not admin
  * @return void
  */
-function require_admin() {
+function require_admin($redirect_url = '/Public/login.php') {
     if (!isset($_SESSION['user_id']) || $_SESSION['user_role'] !== 'admin') {
-        header('Location: /Public/login.php');
+        header('Location: ' . $redirect_url);
         exit;
     }
 }
@@ -280,11 +236,11 @@ function is_logged_in() {
 }
 
 /**
- * Get current user data
+ * Get current logged-in user data
  * 
- * @return array|null User data or null if not logged in
+ * @return array|null User data array or null if not logged in
  */
-function get_current_user() {
+function get_logged_in_user() {
     if (!is_logged_in()) {
         return null;
     }

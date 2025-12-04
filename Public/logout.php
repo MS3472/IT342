@@ -1,12 +1,11 @@
 <?php
 /**
- * Logout Endpoint
- * Logs out the current user and redirects to login page
+ * PowerHub Logout
+ * Location: Public/logout.php
  */
 
-session_start();
-
-require_once __DIR__ . '/Include/auth.php';
+// Include authentication functions
+require_once __DIR__ . '/../Include/auth.php';
 
 // Logout the user
 logout_user();

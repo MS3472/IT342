@@ -1,16 +1,7 @@
 <?php
 session_start();
-
-// Try to include auth.php - check if user is logged in
-$auth_file = __DIR__ . '/../Include/auth.php';
-if (file_exists($auth_file)) {
-    require_once $auth_file;
-} else {
-    // Fallback function if auth.php doesn't exist
-    function is_logged_in() {
-        return isset($_SESSION['user_id']);
-    }
-}
+require_once __DIR__ . '/../Include/auth.php';
+$user = get_logged_in_user();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -122,6 +113,35 @@ if (file_exists($auth_file)) {
         .nav-links a:hover::after,
         .nav-links a.active::after {
             width: 100%;
+        }
+
+        .user-greeting {
+            color: var(--primary-cyan) !important;
+            font-weight: 600;
+            white-space: nowrap;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(0, 217, 255, 0.1);
+            transition: all 0.3s ease;
+            text-decoration: none !important;
+        }
+
+        .user-greeting:hover {
+            background: rgba(0, 217, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 217, 255, 0.3);
+        }
+
+        .user-greeting::after {
+            display: none;
+        }
+
+        .logout-link {
+            color: #ff6b6b !important;
+        }
+
+        .logout-link:hover {
+            color: #ff5252 !important;
         }
 
         .cart-link {
@@ -624,8 +644,45 @@ if (file_exists($auth_file)) {
             color: var(--text-secondary);
         }
 
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-cyan);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
         /* Responsive */
         @media (max-width: 968px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(10, 14, 39, 0.98);
+                flex-direction: column;
+                padding: 20px;
+                display: none;
+                border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+                gap: 20px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
             .cart-layout {
                 grid-template-columns: 1fr;
             }
@@ -653,10 +710,6 @@ if (file_exists($auth_file)) {
                 margin-top: 15px;
             }
 
-            .nav-links {
-                gap: 20px;
-            }
-
             .modal-content {
                 padding: 40px 30px;
             }
@@ -675,22 +728,33 @@ if (file_exists($auth_file)) {
     </style>
 </head>
 <body>
-    <header class="header">
+    <header class="header" id="header">
         <div class="container">
             <nav class="nav">
-                <a href="index.php" class="logo">PowerHub</a>
-                <div class="nav-links">
-                    <a href="index.php">Home</a>
-                    <a href="products.php">Products</a>
-                    <?php if (is_logged_in()): ?>
-                        <a href="account.php">My Account</a>
-                    <?php else: ?>
-                        <a href="login.php">Login</a>
-                        <a href="register.php">Register</a>
-                    <?php endif; ?>
-                    <a href="cart.php" class="cart-link active">
+                <a href="/Public/index.php" class="logo">PowerHub</a>
+                
+                <div class="menu-toggle" id="menuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                
+                <div class="nav-links" id="navLinks">
+                    <a href="/Public/index.php">Home</a>
+                    <a href="/Public/products.php">Products</a>
+                    <a href="/Public/cart.php" class="cart-link active">
                         Cart <span class="cart-badge" id="cartBadge">0</span>
                     </a>
+                    
+                    <?php if ($user): ?>
+                        <a href="/Public/account.php" class="user-greeting">
+                            Hello, <?= htmlspecialchars($user['name']) ?> 👤
+                        </a>
+                        <a href="/Public/logout.php" class="logout-link">Logout</a>
+                    <?php else: ?>
+                        <a href="/Public/login.php">Login</a>
+                        <a href="/Public/register.php">Register</a>
+                    <?php endif; ?>
                 </div>
             </nav>
         </div>
@@ -714,7 +778,7 @@ if (file_exists($auth_file)) {
                                 <div class="empty-cart-icon">🛒</div>
                                 <h2>Your cart is empty</h2>
                                 <p>Add some amazing power banks to get started!</p>
-                                <a href="products.php" class="btn btn-primary">Browse Products</a>
+                                <a href="/Public/products.php" class="btn btn-primary">Browse Products</a>
                             </div>
                         </div>
                     </div>
@@ -741,7 +805,7 @@ if (file_exists($auth_file)) {
                         <button class="btn btn-primary btn-lg" id="proceedCheckoutBtn">
                             Proceed to Checkout
                         </button>
-                        <a href="products.php" class="btn btn-secondary">Continue Shopping</a>
+                        <a href="/Public/products.php" class="btn btn-secondary">Continue Shopping</a>
                     </div>
                 </div>
             </div>
@@ -758,10 +822,10 @@ if (file_exists($auth_file)) {
                 <p>Please log in or create an account to proceed with checkout. It only takes a minute!</p>
             </div>
             <div class="modal-actions">
-                <a href="login.php?redirect=checkout.php" class="modal-btn modal-btn-primary">
+                <a href="/Public/login.php?redirect=checkout.php" class="modal-btn modal-btn-primary">
                     🚀 Login to Continue
                 </a>
-                <a href="register.php?redirect=checkout.php" class="modal-btn modal-btn-secondary">
+                <a href="/Public/register.php?redirect=checkout.php" class="modal-btn modal-btn-secondary">
                     ✨ Create New Account
                 </a>
             </div>
@@ -778,10 +842,10 @@ if (file_exists($auth_file)) {
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="products.php">Products</a></li>
-                        <li><a href="account.php">My Account</a></li>
-                        <li><a href="cart.php">Shopping Cart</a></li>
-                        <li><a href="login.php">Login</a></li>
+                        <li><a href="/Public/products.php">Products</a></li>
+                        <li><a href="/Public/account.php">My Account</a></li>
+                        <li><a href="/Public/cart.php">Shopping Cart</a></li>
+                        <li><a href="/Public/login.php">Login</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -809,141 +873,176 @@ if (file_exists($auth_file)) {
         </div>
     </footer>
 
-    <script src="assets/js/auth.js"></script>
-    <script src="assets/js/main.js"></script>
     <script>
-        // Check if user is logged in (PHP-based)
-        const isUserLoggedIn = <?php echo is_logged_in() ? 'true' : 'false'; ?>;
-        
-        // Initialize cart page
-        displayCart();
-        
-        // Handle checkout button - requires authentication
-        document.getElementById('proceedCheckoutBtn').addEventListener('click', function() {
-            const cart = getCart();
-            if (cart.length === 0) {
-                alert('Your cart is empty');
-                return;
-            }
-            
-            // Check if user is logged in
-            if (!isUserLoggedIn) {
-                // Show authentication modal
-                showAuthModal();
-            } else {
-                // Proceed to checkout
-                window.location.href = 'checkout.php';
-            }
-        });
-
-        function showAuthModal() {
-            document.getElementById('authModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
+    // Header scroll effect
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
         }
+    });
 
-        function closeAuthModal() {
-            document.getElementById('authModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-        }
-
-        // Close modal when clicking outside
-        document.getElementById('authModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeAuthModal();
-            }
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    
+    if (menuToggle) {
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
         });
+    }
 
-        // Close modal on ESC key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                closeAuthModal();
-            }
-        });
+    // Cart functions
+    function getCart() {
+        return JSON.parse(localStorage.getItem('cart') || '[]');
+    }
 
-        // Display cart function
-        function displayCart() {
+    function saveCart(cart) {
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartBadge();
+    }
+
+    function updateCartBadge() {
+        const cartBadge = document.getElementById('cartBadge');
+        if (cartBadge) {
             const cart = getCart();
-            const container = document.getElementById('cartItemsContainer');
-            
-            if (cart.length === 0) {
-                updateCartSummary(0, 0, 0);
-                return;
-            }
+            const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+            cartBadge.textContent = totalItems;
+        }
+    }
 
-            container.innerHTML = '';
-            let subtotal = 0;
-
-            cart.forEach((item, index) => {
-                const itemTotal = item.price * item.quantity;
-                subtotal += itemTotal;
-
-                const cartItemHTML = `
-                    <div class="cart-item">
-                        <div class="cart-item-image">
-                            ${item.image ? `<img src="${item.image}" alt="${item.name}">` : '🔋'}
-                        </div>
-                        <div class="cart-item-details">
-                            <h3>${item.name}</h3>
-                            <p class="cart-item-description">${item.description || ''}</p>
-                            <div class="cart-item-price">$${item.price.toFixed(2)}</div>
-                            <div class="cart-item-actions">
-                                <div class="cart-item-quantity">
-                                    <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">−</button>
-                                    <input type="number" class="quantity-input" value="${item.quantity}" readonly>
-                                    <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">+</button>
-                                </div>
-                                <button class="remove-item-btn" onclick="removeFromCart(${index})">Remove</button>
-                            </div>
-                        </div>
-                        <div class="cart-item-right">
-                            <div class="cart-item-total">$${itemTotal.toFixed(2)}</div>
-                        </div>
-                    </div>
-                `;
-                container.innerHTML += cartItemHTML;
+    function addToCart(product) {
+        let cart = getCart();
+        
+        // Check if product already exists in cart
+        const existingIndex = cart.findIndex(item => item.name === product.name);
+        
+        if (existingIndex > -1) {
+            // Product exists, increment quantity
+            cart[existingIndex].quantity += 1;
+        } else {
+            // New product, add to cart
+            cart.push({
+                name: product.name,
+                price: product.price,
+                description: product.description,
+                image: product.image,
+                quantity: 1
             });
+        }
+        
+        saveCart(cart);
+        
+        // Show success message
+        showAddedToCartMessage(product.name);
+    }
 
-            const shipping = subtotal > 0 ? 10.00 : 0;
-            const tax = subtotal * 0.10;
-            updateCartSummary(subtotal, shipping, tax);
+    function showAddedToCartMessage(productName) {
+        // Remove any existing notification
+        const existingNotification = document.querySelector('.cart-notification');
+        if (existingNotification) {
+            existingNotification.remove();
         }
 
-        function updateCartSummary(subtotal, shipping, tax) {
-            const total = subtotal + shipping + tax;
-            document.getElementById('cartSubtotal').textContent = '$' + subtotal.toFixed(2);
-            document.getElementById('cartShipping').textContent = '$' + shipping.toFixed(2);
-            document.getElementById('cartTax').textContent = '$' + tax.toFixed(2);
-            document.getElementById('cartTotal').textContent = '$' + total.toFixed(2);
-        }
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = 'cart-notification';
+        notification.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: linear-gradient(135deg, #00d9ff 0%, #4c6fff 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.4);
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+            font-weight: 600;
+        `;
+        notification.innerHTML = `✓ ${productName} added to cart!`;
+        
+        document.body.appendChild(notification);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+            notification.style.animation = 'slideOut 0.3s ease';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 300);
+        }, 3000);
+    }
 
-        function updateQuantity(index, change) {
-            const cart = getCart();
-            cart[index].quantity += change;
-            
-            if (cart[index].quantity <= 0) {
-                cart.splice(index, 1);
+    // Add CSS animations only once
+    if (!document.getElementById('cart-animations')) {
+        const style = document.createElement('style');
+        style.id = 'cart-animations';
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(400px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
             }
-            
-            saveCart(cart);
-            displayCart();
-            updateCartBadge();
-        }
+            @keyframes slideOut {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(400px);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
 
-        function removeFromCart(index) {
-            const cart = getCart();
-            cart.splice(index, 1);
-            saveCart(cart);
-            displayCart();
-            updateCartBadge();
+    // Use event delegation for dynamically added buttons
+    document.addEventListener('click', function(e) {
+        // Check if the clicked element is an "Add to Cart" button
+        if (e.target.classList.contains('add-to-cart-btn')) {
+            const productCard = e.target.closest('.product-card');
+            if (productCard) {
+                const productName = productCard.querySelector('.product-name').textContent;
+                const productPriceText = productCard.querySelector('.product-price').textContent.replace('$', '');
+                const productPrice = parseFloat(productPriceText);
+                const productDescription = productCard.querySelector('.product-description').textContent;
+                const productImageElement = productCard.querySelector('.product-image img');
+                const productImage = productImageElement ? productImageElement.src : '';
+                
+                const product = {
+                    name: productName,
+                    price: productPrice,
+                    description: productDescription,
+                    image: productImage
+                };
+                
+                addToCart(product);
+            }
         }
+    });
 
-        function getCart() {
-            return JSON.parse(localStorage.getItem('cart') || '[]');
-        }
+    // Initialize cart badge on page load
+    updateCartBadge();
 
-        function saveCart(cart) {
-            localStorage.setItem('cart', JSON.stringify(cart));
-        }
-    </script>
+    // Clear filters
+    const clearFiltersBtn = document.getElementById('clearFilters');
+    if (clearFiltersBtn) {
+        clearFiltersBtn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-checkbox, .filter-radio').forEach(input => {
+                input.checked = false;
+            });
+        });
+    }
+</script>
 </body>
 </html>

@@ -15,7 +15,7 @@ require_once $auth_file;
 require_login();
 
 // Get current user data
-$user = get_current_user();
+$user = get_logged_in_user();
 ?>
 <!DOCTYPE html>
 <html lang="en">

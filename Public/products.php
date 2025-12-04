@@ -1,5 +1,7 @@
 <?php
 session_start();
+require_once __DIR__ . '/../Include/auth.php';
+$user = get_logged_in_user();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,9 +12,7 @@ session_start();
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/styles.css">
     <style>
-        /* Copy the entire CSS from index.php plus additional styles for products page */
         * {
             margin: 0;
             padding: 0;
@@ -41,7 +41,7 @@ session_start();
             overflow-x: hidden;
         }
 
-        /* Header styles - same as index */
+        /* Header styles */
         .header {
             position: fixed;
             top: 0;
@@ -117,6 +117,35 @@ session_start();
         .nav-links a:hover::after,
         .nav-links a.active::after {
             width: 100%;
+        }
+
+        .user-greeting {
+            color: var(--primary-cyan) !important;
+            font-weight: 600;
+            white-space: nowrap;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(0, 217, 255, 0.1);
+            transition: all 0.3s ease;
+            text-decoration: none !important;
+        }
+
+        .user-greeting:hover {
+            background: rgba(0, 217, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 217, 255, 0.3);
+        }
+
+        .user-greeting::after {
+            display: none;
+        }
+
+        .logout-link {
+            color: #ff6b6b !important;
+        }
+
+        .logout-link:hover {
+            color: #ff5252 !important;
         }
 
         .cart-link {
@@ -384,7 +413,7 @@ session_start();
             box-shadow: 0 10px 25px rgba(0, 217, 255, 0.4);
         }
 
-        /* Footer - same as index */
+        /* Footer */
         .footer {
             background: #070a1f;
             padding: 60px 0 30px;
@@ -435,8 +464,45 @@ session_start();
             color: var(--text-secondary);
         }
 
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--primary-cyan);
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
         /* Responsive */
         @media (max-width: 968px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(10, 14, 39, 0.98);
+                flex-direction: column;
+                padding: 20px;
+                display: none;
+                border-bottom: 1px solid rgba(0, 217, 255, 0.1);
+                gap: 20px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
             .products-layout {
                 grid-template-columns: 1fr;
             }
@@ -454,10 +520,6 @@ session_start();
             .products-grid {
                 grid-template-columns: 1fr;
             }
-
-            .nav-links {
-                gap: 20px;
-            }
         }
     </style>
 </head>
@@ -465,14 +527,28 @@ session_start();
     <header class="header" id="header">
         <div class="container">
             <nav class="nav">
-                <a href="index.php" class="logo">PowerHub</a>
-                <div class="nav-links">
-                    <a href="index.php">Home</a>
-                    <a href="products.php" class="active">Products</a>
-                    <a href="cart.php" class="cart-link">
+                <a href="/Public/index.php" class="logo">PowerHub</a>
+                <div class="menu-toggle" id="menuToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="nav-links" id="navLinks">
+                    <a href="/Public/index.php">Home</a>
+                    <a href="/Public/products.php" class="active">Products</a>
+                    <a href="/Public/cart.php" class="cart-link">
                         Cart <span class="cart-badge" id="cartBadge">0</span>
                     </a>
-                    <div id="authNav"></div>
+                    
+                    <?php if ($user): ?>
+                        <a href="/Public/account.php" class="user-greeting">
+                            Hello, <?= htmlspecialchars($user['name']) ?> 👤
+                        </a>
+                        <a href="/Public/logout.php" class="logout-link">Logout</a>
+                    <?php else: ?>
+                        <a href="/Public/login.php">Login</a>
+                        <a href="/Public/register.php">Register</a>
+                    <?php endif; ?>
                 </div>
             </nav>
         </div>
@@ -559,7 +635,7 @@ session_start();
                         </div>
 
                         <div class="products-grid" id="productsGrid">
-                            <!-- Products loaded via JS or manually added -->
+                            <!-- Product 1 -->
                             <div class="product-card">
                                 <div class="product-image">
                                     <img src="https://images.unsplash.com/photo-1609091839311-d5365f9ff1c5?w=800&q=80" alt="Power Bank">
@@ -573,6 +649,38 @@ session_start();
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Product 2 -->
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <img src="https://i.ibb.co/JwbgcDyQ/y6jc5ky-Imgur.png" alt="SlimCharge Mini">
+                                </div>
+                                <div class="product-info">
+                                    <h3 class="product-name">SlimCharge Mini 10K</h3>
+                                    <p class="product-description">Ultra-portable 10,000mAh power bank</p>
+                                    <div class="product-footer">
+                                        <span class="product-price">$49.99</span>
+                                        <button class="add-to-cart-btn">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Product 3 -->
+                            <div class="product-card">
+                                <div class="product-image">
+                                    <img src="https://i.ibb.co/Xrb966sV/81f6-ZL6-Imgur.jpg" alt="MegaCharge Elite">
+                                </div>
+                                <div class="product-info">
+                                    <h3 class="product-name">MegaCharge Elite 30K</h3>
+                                    <p class="product-description">Maximum capacity 30,000mAh with 100W output</p>
+                                    <div class="product-footer">
+                                        <span class="product-price">$129.99</span>
+                                        <button class="add-to-cart-btn">Add to Cart</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Add more products as needed -->
                         </div>
                     </div>
                 </div>
@@ -590,10 +698,10 @@ session_start();
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="products.php">Products</a></li>
-                        <li><a href="account.php">My Account</a></li>
-                        <li><a href="cart.php">Shopping Cart</a></li>
-                        <li><a href="login.php">Login</a></li>
+                        <li><a href="/Public/products.php">Products</a></li>
+                        <li><a href="/Public/account.php">My Account</a></li>
+                        <li><a href="/Public/cart.php">Shopping Cart</a></li>
+                        <li><a href="/Public/login.php">Login</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -621,8 +729,6 @@ session_start();
         </div>
     </footer>
 
-    <script src="assets/js/auth.js"></script>
-    <script src="assets/js/main.js"></script>
     <script>
         // Header scroll effect
         const header = document.getElementById('header');
@@ -634,9 +740,30 @@ session_start();
             }
         });
 
-        // Initialize products page
-        // loadAllProducts();
-        // initializeFilters();
+        // Mobile menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Update cart badge
+        function updateCartBadge() {
+            const cartBadge = document.getElementById('cartBadge');
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+            cartBadge.textContent = totalItems;
+        }
+
+        updateCartBadge();
+
+        // Clear filters
+        document.getElementById('clearFilters').addEventListener('click', () => {
+            document.querySelectorAll('.filter-checkbox, .filter-radio').forEach(input => {
+                input.checked = false;
+            });
+        });
     </script>
 </body>
 </html>
