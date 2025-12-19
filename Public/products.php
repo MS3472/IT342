@@ -765,5 +765,7 @@ $user = get_logged_in_user();
             });
         });
     </script>
+    <script src="assets/js/cart.js"></script>
+
 </body>
 </html>

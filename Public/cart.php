@@ -13,11 +13,7 @@ $user = get_logged_in_user();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --primary-cyan: #00d9ff;
@@ -42,7 +38,6 @@ $user = get_logged_in_user();
             overflow-x: hidden;
         }
 
-        /* Header */
         .header {
             position: fixed;
             top: 0;
@@ -54,11 +49,7 @@ $user = get_logged_in_user();
             transition: all 0.3s ease;
         }
 
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
 
         .nav {
             display: flex;
@@ -95,9 +86,7 @@ $user = get_logged_in_user();
         }
 
         .nav-links a:hover,
-        .nav-links a.active {
-            color: var(--primary-cyan);
-        }
+        .nav-links a.active { color: var(--primary-cyan); }
 
         .nav-links a::after {
             content: '';
@@ -111,9 +100,7 @@ $user = get_logged_in_user();
         }
 
         .nav-links a:hover::after,
-        .nav-links a.active::after {
-            width: 100%;
-        }
+        .nav-links a.active::after { width: 100%; }
 
         .user-greeting {
             color: var(--primary-cyan) !important;
@@ -132,21 +119,12 @@ $user = get_logged_in_user();
             box-shadow: 0 5px 15px rgba(0, 217, 255, 0.3);
         }
 
-        .user-greeting::after {
-            display: none;
-        }
+        .user-greeting::after { display: none; }
 
-        .logout-link {
-            color: #ff6b6b !important;
-        }
+        .logout-link { color: #ff6b6b !important; }
+        .logout-link:hover { color: #ff5252 !important; }
 
-        .logout-link:hover {
-            color: #ff5252 !important;
-        }
-
-        .cart-link {
-            position: relative;
-        }
+        .cart-link { position: relative; }
 
         .cart-badge {
             position: absolute;
@@ -164,7 +142,6 @@ $user = get_logged_in_user();
             font-weight: 700;
         }
 
-        /* Page header */
         .page-header {
             margin-top: 80px;
             padding: 60px 0;
@@ -181,19 +158,10 @@ $user = get_logged_in_user();
             background-clip: text;
         }
 
-        /* Cart Section */
-        .cart-section {
-            padding: 60px 0 120px;
-            min-height: 60vh;
-        }
+        .cart-section { padding: 60px 0 120px; min-height: 60vh; }
 
-        .cart-layout {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 40px;
-        }
+        .cart-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
 
-        /* Cart Items */
         .cart-items {
             background: var(--dark-card);
             border: 1px solid rgba(0, 217, 255, 0.1);
@@ -216,9 +184,7 @@ $user = get_logged_in_user();
             border-bottom: 1px solid rgba(0, 217, 255, 0.1);
         }
 
-        .cart-item:last-child {
-            border-bottom: none;
-        }
+        .cart-item:last-child { border-bottom: none; }
 
         .cart-item-image {
             width: 120px;
@@ -232,41 +198,17 @@ $user = get_logged_in_user();
             overflow: hidden;
         }
 
-        .cart-item-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
+        .cart-item-image img { width: 100%; height: 100%; object-fit: cover; }
 
-        .cart-item-details {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+        .cart-item-details { display: flex; flex-direction: column; justify-content: space-between; }
 
-        .cart-item-details h3 {
-            font-size: 20px;
-            margin-bottom: 8px;
-            color: var(--text-primary);
-        }
+        .cart-item-details h3 { font-size: 20px; margin-bottom: 8px; color: var(--text-primary); }
 
-        .cart-item-description {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 15px;
-        }
+        .cart-item-description { font-size: 14px; color: var(--text-secondary); margin-bottom: 15px; }
 
-        .cart-item-price {
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--primary-cyan);
-        }
+        .cart-item-price { font-size: 22px; font-weight: 700; color: var(--primary-cyan); }
 
-        .cart-item-actions {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+        .cart-item-actions { display: flex; align-items: center; gap: 15px; }
 
         .cart-item-quantity {
             display: flex;
@@ -290,9 +232,7 @@ $user = get_logged_in_user();
             border-radius: 6px;
         }
 
-        .quantity-btn:hover {
-            background: rgba(0, 217, 255, 0.1);
-        }
+        .quantity-btn:hover { background: rgba(0, 217, 255, 0.1); }
 
         .quantity-input {
             width: 50px;
@@ -315,48 +255,17 @@ $user = get_logged_in_user();
             transition: all 0.3s ease;
         }
 
-        .remove-item-btn:hover {
-            color: #dc2626;
-        }
+        .remove-item-btn:hover { color: #dc2626; }
 
-        .cart-item-right {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            justify-content: space-between;
-        }
+        .cart-item-right { display: flex; flex-direction: column; align-items: flex-end; justify-content: space-between; }
 
-        .cart-item-total {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
+        .cart-item-total { font-size: 24px; font-weight: 700; color: var(--text-primary); }
 
-        /* Empty Cart */
-        .empty-cart {
-            text-align: center;
-            padding: 80px 40px;
-        }
+        .empty-cart { text-align: center; padding: 80px 40px; }
+        .empty-cart-icon { font-size: 80px; margin-bottom: 20px; opacity: 0.5; }
+        .empty-cart h2 { font-size: 28px; margin-bottom: 15px; color: var(--text-secondary); }
+        .empty-cart p { font-size: 16px; color: var(--text-secondary); margin-bottom: 30px; }
 
-        .empty-cart-icon {
-            font-size: 80px;
-            margin-bottom: 20px;
-            opacity: 0.5;
-        }
-
-        .empty-cart h2 {
-            font-size: 28px;
-            margin-bottom: 15px;
-            color: var(--text-secondary);
-        }
-
-        .empty-cart p {
-            font-size: 16px;
-            color: var(--text-secondary);
-            margin-bottom: 30px;
-        }
-
-        /* Cart Summary */
         .cart-summary {
             background: var(--dark-card);
             border: 1px solid rgba(0, 217, 255, 0.1);
@@ -382,10 +291,7 @@ $user = get_logged_in_user();
             font-size: 15px;
         }
 
-        .summary-row span:last-child {
-            font-weight: 600;
-            color: var(--text-primary);
-        }
+        .summary-row span:last-child { font-weight: 600; color: var(--text-primary); }
 
         .cart-summary hr {
             border: none;
@@ -393,19 +299,9 @@ $user = get_logged_in_user();
             margin: 20px 0;
         }
 
-        .summary-total {
-            font-size: 20px;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-top: 20px;
-        }
+        .summary-total { font-size: 20px; font-weight: 700; color: var(--text-primary); margin-top: 20px; }
+        .summary-total span:last-child { color: var(--primary-cyan); font-size: 28px; }
 
-        .summary-total span:last-child {
-            color: var(--primary-cyan);
-            font-size: 28px;
-        }
-
-        /* Buttons */
         .btn {
             display: inline-block;
             padding: 16px 35px;
@@ -432,11 +328,7 @@ $user = get_logged_in_user();
             box-shadow: 0 15px 40px rgba(0, 217, 255, 0.5);
         }
 
-        .btn-primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
         .btn-secondary {
             background: transparent;
@@ -446,16 +338,10 @@ $user = get_logged_in_user();
             margin-top: 15px;
         }
 
-        .btn-secondary:hover {
-            background: rgba(0, 217, 255, 0.1);
-        }
+        .btn-secondary:hover { background: rgba(0, 217, 255, 0.1); }
 
-        .btn-lg {
-            padding: 18px 40px;
-            font-size: 17px;
-        }
+        .btn-lg { padding: 18px 40px; font-size: 17px; }
 
-        /* Auth Modal */
         .modal {
             display: none;
             position: fixed;
@@ -471,14 +357,9 @@ $user = get_logged_in_user();
             animation: fadeIn 0.3s ease;
         }
 
-        .modal.active {
-            display: flex;
-        }
+        .modal.active { display: flex; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .modal-content {
             background: var(--dark-card);
@@ -493,14 +374,8 @@ $user = get_logged_in_user();
         }
 
         @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .modal-close {
@@ -521,20 +396,10 @@ $user = get_logged_in_user();
             border-radius: 50%;
         }
 
-        .modal-close:hover {
-            background: rgba(0, 217, 255, 0.1);
-            color: var(--primary-cyan);
-        }
+        .modal-close:hover { background: rgba(0, 217, 255, 0.1); color: var(--primary-cyan); }
 
-        .modal-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .modal-icon {
-            font-size: 60px;
-            margin-bottom: 20px;
-        }
+        .modal-header { text-align: center; margin-bottom: 30px; }
+        .modal-icon { font-size: 60px; margin-bottom: 20px; }
 
         .modal-header h2 {
             font-family: 'Orbitron', sans-serif;
@@ -546,18 +411,9 @@ $user = get_logged_in_user();
             margin-bottom: 12px;
         }
 
-        .modal-header p {
-            color: var(--text-secondary);
-            font-size: 15px;
-            line-height: 1.6;
-        }
+        .modal-header p { color: var(--text-secondary); font-size: 15px; line-height: 1.6; }
 
-        .modal-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 30px;
-        }
+        .modal-actions { display: flex; flex-direction: column; gap: 15px; margin-top: 30px; }
 
         .modal-btn {
             padding: 18px 30px;
@@ -589,11 +445,8 @@ $user = get_logged_in_user();
             border: 2px solid var(--primary-cyan);
         }
 
-        .modal-btn-secondary:hover {
-            background: rgba(0, 217, 255, 0.1);
-        }
+        .modal-btn-secondary:hover { background: rgba(0, 217, 255, 0.1); }
 
-        /* Footer */
         .footer {
             background: #070a1f;
             padding: 60px 0 30px;
@@ -607,35 +460,12 @@ $user = get_logged_in_user();
             margin-bottom: 40px;
         }
 
-        .footer-section h4 {
-            font-size: 20px;
-            margin-bottom: 20px;
-            color: var(--primary-cyan);
-        }
-
-        .footer-section p {
-            color: var(--text-secondary);
-            line-height: 1.8;
-        }
-
-        .footer-section ul {
-            list-style: none;
-        }
-
-        .footer-section ul li {
-            margin-bottom: 12px;
-        }
-
-        .footer-section a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .footer-section a:hover {
-            color: var(--primary-cyan);
-            padding-left: 5px;
-        }
+        .footer-section h4 { font-size: 20px; margin-bottom: 20px; color: var(--primary-cyan); }
+        .footer-section p { color: var(--text-secondary); line-height: 1.8; }
+        .footer-section ul { list-style: none; }
+        .footer-section ul li { margin-bottom: 12px; }
+        .footer-section a { color: var(--text-secondary); text-decoration: none; transition: all 0.3s ease; }
+        .footer-section a:hover { color: var(--primary-cyan); padding-left: 5px; }
 
         .footer-bottom {
             text-align: center;
@@ -644,28 +474,11 @@ $user = get_logged_in_user();
             color: var(--text-secondary);
         }
 
-        /* Mobile Menu Toggle */
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-            gap: 5px;
-        }
+        .menu-toggle { display: none; flex-direction: column; cursor: pointer; gap: 5px; }
+        .menu-toggle span { width: 25px; height: 3px; background: var(--primary-cyan); border-radius: 3px; transition: all 0.3s ease; }
 
-        .menu-toggle span {
-            width: 25px;
-            height: 3px;
-            background: var(--primary-cyan);
-            border-radius: 3px;
-            transition: all 0.3s ease;
-        }
-
-        /* Responsive */
         @media (max-width: 968px) {
-            .menu-toggle {
-                display: flex;
-            }
-
+            .menu-toggle { display: flex; }
             .nav-links {
                 position: absolute;
                 top: 100%;
@@ -678,30 +491,14 @@ $user = get_logged_in_user();
                 border-bottom: 1px solid rgba(0, 217, 255, 0.1);
                 gap: 20px;
             }
-
-            .nav-links.active {
-                display: flex;
-            }
-
-            .cart-layout {
-                grid-template-columns: 1fr;
-            }
-
-            .cart-summary {
-                position: static;
-            }
+            .nav-links.active { display: flex; }
+            .cart-layout { grid-template-columns: 1fr; }
+            .cart-summary { position: static; }
         }
 
         @media (max-width: 768px) {
-            .page-header h1 {
-                font-size: 36px;
-            }
-
-            .cart-item {
-                grid-template-columns: 80px 1fr;
-                gap: 15px;
-            }
-
+            .page-header h1 { font-size: 36px; }
+            .cart-item { grid-template-columns: 80px 1fr; gap: 15px; }
             .cart-item-right {
                 grid-column: 1 / -1;
                 flex-direction: row;
@@ -709,192 +506,168 @@ $user = get_logged_in_user();
                 align-items: center;
                 margin-top: 15px;
             }
-
-            .modal-content {
-                padding: 40px 30px;
-            }
+            .modal-content { padding: 40px 30px; }
         }
 
         @media (max-width: 480px) {
-            .cart-items,
-            .cart-summary {
-                padding: 20px;
-            }
-
-            .empty-cart {
-                padding: 60px 20px;
-            }
+            .cart-items, .cart-summary { padding: 20px; }
+            .empty-cart { padding: 60px 20px; }
         }
     </style>
 </head>
 <body>
-    <header class="header" id="header">
-        <div class="container">
-            <nav class="nav">
-                <a href="/Public/index.php" class="logo">PowerHub</a>
-                
-                <div class="menu-toggle" id="menuToggle">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-                
-                <div class="nav-links" id="navLinks">
-                    <a href="/Public/index.php">Home</a>
-                    <a href="/Public/products.php">Products</a>
-                    <a href="/Public/cart.php" class="cart-link active">
-                        Cart <span class="cart-badge" id="cartBadge">0</span>
+<header class="header" id="header">
+    <div class="container">
+        <nav class="nav">
+            <a href="/Public/index.php" class="logo">PowerHub</a>
+
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div class="nav-links" id="navLinks">
+                <a href="/Public/index.php">Home</a>
+                <a href="/Public/products.php">Products</a>
+                <a href="/Public/cart.php" class="cart-link active">
+                    Cart <span class="cart-badge" id="cartBadge">0</span>
+                </a>
+
+                <?php if ($user): ?>
+                    <a href="/Public/account.php" class="user-greeting">
+                        Hello, <?= htmlspecialchars($user['name']) ?> 👤
                     </a>
-                    
-                    <?php if ($user): ?>
-                        <a href="/Public/account.php" class="user-greeting">
-                            Hello, <?= htmlspecialchars($user['name']) ?> 👤
-                        </a>
-                        <a href="/Public/logout.php" class="logout-link">Logout</a>
-                    <?php else: ?>
-                        <a href="/Public/login.php">Login</a>
-                        <a href="/Public/register.php">Register</a>
-                    <?php endif; ?>
-                </div>
-            </nav>
+                    <a href="/Public/logout.php" class="logout-link">Logout</a>
+                <?php else: ?>
+                    <a href="/Public/login.php">Login</a>
+                    <a href="/Public/register.php">Register</a>
+                <?php endif; ?>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="page-header">
+        <div class="container">
+            <h1>Shopping Cart</h1>
         </div>
-    </header>
+    </section>
 
-    <main>
-        <section class="page-header">
-            <div class="container">
-                <h1>Shopping Cart</h1>
-            </div>
-        </section>
+    <section class="cart-section">
+        <div class="container">
+            <div class="cart-layout">
+                <div class="cart-items">
+                    <h2>Your Items</h2>
+                    <div id="cartItemsContainer"></div>
+                </div>
 
-        <section class="cart-section">
-            <div class="container">
-                <div class="cart-layout">
-                    <div class="cart-items">
-                        <h2>Your Items</h2>
-                        <div id="cartItemsContainer">
-                            <!-- Empty cart message -->
-                            <div class="empty-cart">
-                                <div class="empty-cart-icon">🛒</div>
-                                <h2>Your cart is empty</h2>
-                                <p>Add some amazing power banks to get started!</p>
-                                <a href="/Public/products.php" class="btn btn-primary">Browse Products</a>
-                            </div>
-                        </div>
+                <div class="cart-summary">
+                    <h3>Order Summary</h3>
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="cartSubtotal">$0.00</span>
                     </div>
-
-                    <div class="cart-summary">
-                        <h3>Order Summary</h3>
-                        <div class="summary-row">
-                            <span>Subtotal:</span>
-                            <span id="cartSubtotal">$0.00</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Shipping:</span>
-                            <span id="cartShipping">$0.00</span>
-                        </div>
-                        <div class="summary-row">
-                            <span>Tax (10%):</span>
-                            <span id="cartTax">$0.00</span>
-                        </div>
-                        <hr>
-                        <div class="summary-row summary-total">
-                            <span>Total:</span>
-                            <span id="cartTotal">$0.00</span>
-                        </div>
-                        <button class="btn btn-primary btn-lg" id="proceedCheckoutBtn">
-                            Proceed to Checkout
-                        </button>
-                        <a href="/Public/products.php" class="btn btn-secondary">Continue Shopping</a>
+                    <div class="summary-row">
+                        <span>Shipping:</span>
+                        <span id="cartShipping">$0.00</span>
                     </div>
+                    <div class="summary-row">
+                        <span>Tax (10%):</span>
+                        <span id="cartTax">$0.00</span>
+                    </div>
+                    <hr>
+                    <div class="summary-row summary-total">
+                        <span>Total:</span>
+                        <span id="cartTotal">$0.00</span>
+                    </div>
+                    <button class="btn btn-primary btn-lg" id="proceedCheckoutBtn">
+                        Proceed to Checkout
+                    </button>
+                    <a href="/Public/products.php" class="btn btn-secondary">Continue Shopping</a>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
+</main>
 
-    <!-- Authentication Required Modal -->
-    <div id="authModal" class="modal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeAuthModal()">&times;</button>
-            <div class="modal-header">
-                <div class="modal-icon">🔒</div>
-                <h2>Login Required</h2>
-                <p>Please log in or create an account to proceed with checkout. It only takes a minute!</p>
-            </div>
-            <div class="modal-actions">
-                <a href="/Public/login.php?redirect=checkout.php" class="modal-btn modal-btn-primary">
-                    🚀 Login to Continue
-                </a>
-                <a href="/Public/register.php?redirect=checkout.php" class="modal-btn modal-btn-secondary">
-                    ✨ Create New Account
-                </a>
-            </div>
+<!-- Authentication Required Modal -->
+<div id="authModal" class="modal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeAuthModal()">&times;</button>
+        <div class="modal-header">
+            <div class="modal-icon">🔒</div>
+            <h2>Login Required</h2>
+            <p>Please log in or create an account to proceed with checkout. It only takes a minute!</p>
+        </div>
+        <div class="modal-actions">
+            <a href="/Public/login.php?redirect=checkout.php" class="modal-btn modal-btn-primary">
+                🚀 Login to Continue
+            </a>
+            <a href="/Public/register.php?redirect=checkout.php" class="modal-btn modal-btn-secondary">
+                ✨ Create New Account
+            </a>
         </div>
     </div>
+</div>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>PowerHub</h4>
-                    <p>Premium portable charging solutions engineered for modern life.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="/Public/products.php">Products</a></li>
-                        <li><a href="/Public/account.php">My Account</a></li>
-                        <li><a href="/Public/cart.php">Shopping Cart</a></li>
-                        <li><a href="/Public/login.php">Login</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Customer Support</h4>
-                    <ul>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Shipping Information</a></li>
-                        <li><a href="#">Returns & Warranty</a></li>
-                        <li><a href="#">FAQ</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Company</h4>
-                    <ul>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Our Technology</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                    </ul>
-                </div>
+<footer class="footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>PowerHub</h4>
+                <p>Premium portable charging solutions engineered for modern life.</p>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 PowerHub. All rights reserved. Designed for the future.</p>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/Public/products.php">Products</a></li>
+                    <li><a href="/Public/account.php">My Account</a></li>
+                    <li><a href="/Public/cart.php">Shopping Cart</a></li>
+                    <li><a href="/Public/login.php">Login</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Customer Support</h4>
+                <ul>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">Shipping Information</a></li>
+                    <li><a href="#">Returns & Warranty</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Our Technology</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
             </div>
         </div>
-    </footer>
+        <div class="footer-bottom">
+            <p>&copy; 2024 PowerHub. All rights reserved. Designed for the future.</p>
+        </div>
+    </div>
+</footer>
 
-    <script>
+<script>
     // Header scroll effect
     const header = document.getElementById('header');
     window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
+        if (window.scrollY > 50) header.classList.add('scrolled');
+        else header.classList.remove('scrolled');
     });
 
     // Mobile menu toggle
     const menuToggle = document.getElementById('menuToggle');
     const navLinks = document.getElementById('navLinks');
-    
     if (menuToggle) {
-        menuToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
+        menuToggle.addEventListener('click', () => navLinks.classList.toggle('active'));
     }
 
-    // Cart functions
     function getCart() {
         return JSON.parse(localStorage.getItem('cart') || '[]');
     }
@@ -906,143 +679,138 @@ $user = get_logged_in_user();
 
     function updateCartBadge() {
         const cartBadge = document.getElementById('cartBadge');
-        if (cartBadge) {
-            const cart = getCart();
-            const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
-            cartBadge.textContent = totalItems;
-        }
+        if (!cartBadge) return;
+        const cart = getCart();
+        const totalItems = cart.reduce((sum, item) => sum + (Number(item.quantity) || 1), 0);
+        cartBadge.textContent = totalItems;
     }
 
-    function addToCart(product) {
-        let cart = getCart();
-        
-        // Check if product already exists in cart
-        const existingIndex = cart.findIndex(item => item.name === product.name);
-        
-        if (existingIndex > -1) {
-            // Product exists, increment quantity
-            cart[existingIndex].quantity += 1;
-        } else {
-            // New product, add to cart
-            cart.push({
-                name: product.name,
-                price: product.price,
-                description: product.description,
-                image: product.image,
-                quantity: 1
-            });
+    function setMoney(id, val) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.textContent = `$${val.toFixed(2)}`;
+    }
+
+    function updateSummaryFromCart(cart) {
+        const subtotal = cart.reduce((sum, item) => sum + (Number(item.price) || 0) * (Number(item.quantity) || 1), 0);
+        const shipping = subtotal > 0 ? 10.00 : 0.00;
+        const tax = subtotal * 0.10;
+        const total = subtotal + shipping + tax;
+
+        setMoney('cartSubtotal', subtotal);
+        setMoney('cartShipping', shipping);
+        setMoney('cartTax', tax);
+        setMoney('cartTotal', total);
+
+        const proceedBtn = document.getElementById('proceedCheckoutBtn');
+        if (proceedBtn) proceedBtn.disabled = cart.length === 0;
+    }
+
+    function renderCart() {
+        const container = document.getElementById('cartItemsContainer');
+        if (!container) return;
+
+        const cart = getCart();
+
+        if (cart.length === 0) {
+            container.innerHTML = `
+                <div class="empty-cart">
+                    <div class="empty-cart-icon">🛒</div>
+                    <h2>Your cart is empty</h2>
+                    <p>Add some amazing power banks to get started!</p>
+                    <a href="/Public/products.php" class="btn btn-primary">Browse Products</a>
+                </div>
+            `;
+            updateSummaryFromCart([]);
+            return;
         }
-        
+
+        container.innerHTML = cart.map((item, index) => {
+            const qty = Number(item.quantity) || 1;
+            const price = Number(item.price) || 0;
+            const lineTotal = price * qty;
+            const imgHtml = item.image
+                ? `<img src="${item.image}" alt="${item.name}">`
+                : `🔋`;
+
+            return `
+                <div class="cart-item">
+                    <div class="cart-item-image">${imgHtml}</div>
+
+                    <div class="cart-item-details">
+                        <div>
+                            <h3>${item.name}</h3>
+                            <div class="cart-item-description">${item.description || ''}</div>
+                            <div class="cart-item-price">$${price.toFixed(2)}</div>
+                        </div>
+
+                        <div class="cart-item-actions">
+                            <div class="cart-item-quantity">
+                                <button class="quantity-btn" data-action="dec" data-index="${index}">−</button>
+                                <input class="quantity-input" value="${qty}" readonly />
+                                <button class="quantity-btn" data-action="inc" data-index="${index}">+</button>
+                            </div>
+                            <button class="remove-item-btn" data-action="remove" data-index="${index}">Remove</button>
+                        </div>
+                    </div>
+
+                    <div class="cart-item-right">
+                        <div class="cart-item-total">$${lineTotal.toFixed(2)}</div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        updateSummaryFromCart(cart);
+    }
+
+    document.addEventListener('click', (e) => {
+        const btn = e.target.closest('[data-action]');
+        if (!btn) return;
+
+        const action = btn.dataset.action;
+        const index = Number(btn.dataset.index);
+
+        const cart = getCart();
+        const item = cart[index];
+        if (!item) return;
+
+        if (action === 'inc') item.quantity = (Number(item.quantity) || 1) + 1;
+        if (action === 'dec') item.quantity = Math.max(1, (Number(item.quantity) || 1) - 1);
+        if (action === 'remove') cart.splice(index, 1);
+
         saveCart(cart);
-        
-        // Show success message
-        showAddedToCartMessage(product.name);
-    }
-
-    function showAddedToCartMessage(productName) {
-        // Remove any existing notification
-        const existingNotification = document.querySelector('.cart-notification');
-        if (existingNotification) {
-            existingNotification.remove();
-        }
-
-        // Create notification element
-        const notification = document.createElement('div');
-        notification.className = 'cart-notification';
-        notification.style.cssText = `
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: linear-gradient(135deg, #00d9ff 0%, #4c6fff 100%);
-            color: white;
-            padding: 20px 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 217, 255, 0.4);
-            z-index: 10000;
-            animation: slideIn 0.3s ease;
-            font-weight: 600;
-        `;
-        notification.innerHTML = `✓ ${productName} added to cart!`;
-        
-        document.body.appendChild(notification);
-        
-        // Remove after 3 seconds
-        setTimeout(() => {
-            notification.style.animation = 'slideOut 0.3s ease';
-            setTimeout(() => {
-                if (notification.parentNode) {
-                    notification.remove();
-                }
-            }, 300);
-        }, 3000);
-    }
-
-    // Add CSS animations only once
-    if (!document.getElementById('cart-animations')) {
-        const style = document.createElement('style');
-        style.id = 'cart-animations';
-        style.textContent = `
-            @keyframes slideIn {
-                from {
-                    transform: translateX(400px);
-                    opacity: 0;
-                }
-                to {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-            }
-            @keyframes slideOut {
-                from {
-                    transform: translateX(0);
-                    opacity: 1;
-                }
-                to {
-                    transform: translateX(400px);
-                    opacity: 0;
-                }
-            }
-        `;
-        document.head.appendChild(style);
-    }
-
-    // Use event delegation for dynamically added buttons
-    document.addEventListener('click', function(e) {
-        // Check if the clicked element is an "Add to Cart" button
-        if (e.target.classList.contains('add-to-cart-btn')) {
-            const productCard = e.target.closest('.product-card');
-            if (productCard) {
-                const productName = productCard.querySelector('.product-name').textContent;
-                const productPriceText = productCard.querySelector('.product-price').textContent.replace('$', '');
-                const productPrice = parseFloat(productPriceText);
-                const productDescription = productCard.querySelector('.product-description').textContent;
-                const productImageElement = productCard.querySelector('.product-image img');
-                const productImage = productImageElement ? productImageElement.src : '';
-                
-                const product = {
-                    name: productName,
-                    price: productPrice,
-                    description: productDescription,
-                    image: productImage
-                };
-                
-                addToCart(product);
-            }
-        }
+        renderCart();
     });
 
-    // Initialize cart badge on page load
-    updateCartBadge();
+    function openAuthModal() {
+        const modal = document.getElementById('authModal');
+        if (modal) modal.classList.add('active');
+    }
 
-    // Clear filters
-    const clearFiltersBtn = document.getElementById('clearFilters');
-    if (clearFiltersBtn) {
-        clearFiltersBtn.addEventListener('click', () => {
-            document.querySelectorAll('.filter-checkbox, .filter-radio').forEach(input => {
-                input.checked = false;
-            });
+    function closeAuthModal() {
+        const modal = document.getElementById('authModal');
+        if (modal) modal.classList.remove('active');
+    }
+
+    const proceedBtn = document.getElementById('proceedCheckoutBtn');
+    if (proceedBtn) {
+        proceedBtn.addEventListener('click', () => {
+            const cart = getCart();
+            if (cart.length === 0) return;
+
+            const isLoggedIn = <?php echo $user ? 'true' : 'false'; ?>;
+            if (!isLoggedIn) {
+                openAuthModal();
+                return;
+            }
+
+            window.location.href = '/Public/checkout.php';
         });
     }
+
+    // Init
+    updateCartBadge();
+    renderCart();
 </script>
 </body>
-</html>

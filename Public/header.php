@@ -39,13 +39,28 @@ if (!$auth_loaded) {
         }
         return null;
     }
+} else {
+    // If your auth.php already has get_logged_in_user(), this is fine.
+    if (!function_exists('get_logged_in_user')) {
+        function get_logged_in_user() {
+            if (isset($_SESSION['user_id'])) {
+                return [
+                    'id' => $_SESSION['user_id'] ?? null,
+                    'name' => $_SESSION['user_name'] ?? 'User',
+                    'email' => $_SESSION['user_email'] ?? '',
+                    'role' => $_SESSION['user_role'] ?? 'customer'
+                ];
+            }
+            return null;
+        }
+    }
 }
 
 // Get logged-in user (null if not logged in)
 $user = get_logged_in_user();
 
-// Debug: Uncomment to see session data
-// echo "<!-- DEBUG Session: "; print_r($_SESSION); echo " -->";
+// Get current page name for active link highlighting
+$current_page = basename($_SERVER['PHP_SELF']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -57,11 +72,7 @@ $user = get_logged_in_user();
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@600;700;800&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
             --primary-cyan: #00d9ff;
@@ -72,10 +83,8 @@ $user = get_logged_in_user();
             --dark-hover: #1a2347;
             --text-primary: #ffffff;
             --text-secondary: #a0aec0;
-            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             --gradient-2: linear-gradient(135deg, #00d9ff 0%, #4c6fff 100%);
             --gradient-3: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            --error-color: #ef4444;
         }
 
         body {
@@ -168,7 +177,6 @@ $user = get_logged_in_user();
         .user-greeting {
             color: var(--primary-cyan);
             font-weight: 600;
-            margin-right: 5px;
             white-space: nowrap;
         }
 
@@ -217,9 +225,7 @@ $user = get_logged_in_user();
         }
 
         @media (max-width: 968px) {
-            .menu-toggle {
-                display: flex;
-            }
+            .menu-toggle { display: flex; }
 
             .nav-links {
                 position: absolute;
@@ -234,82 +240,68 @@ $user = get_logged_in_user();
                 gap: 20px;
             }
 
-            .nav-links.active {
-                display: flex;
-            }
-
-            .user-greeting {
-                margin-right: 0;
-            }
+            .nav-links.active { display: flex; }
         }
     </style>
 </head>
+
 <body>
-    <header class="header" id="header">
-        <div class="container">
-            <nav class="nav">
-                <a href="/Public/index.php" class="logo">PowerHub</a>
-                
-                <div class="menu-toggle" id="menuToggle">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-                
-                <div class="nav-links" id="navLinks">
-                    <a href="/Public/index.php">Home</a>
-                    <a href="/Public/products.php">Products</a>
-                    <a href="/Public/cart.php" class="cart-link">
-                        Cart <span class="cart-badge" id="cartBadge">0</span>
-                    </a>
-                    
-                    <?php if ($user): ?>
-                        <span class="user-greeting">Hello, <?= htmlspecialchars($user['name']) ?></span>
-                        <a href="/Public/account.php">Account</a>
-                        <a href="/Public/logout.php" class="logout-link">Logout</a>
-                    <?php else: ?>
-                        <a href="/Public/login.php">Login</a>
-                        <a href="/Public/register.php">Register</a>
-                    <?php endif; ?>
-                </div>
-            </nav>
-        </div>
-    </header>
+<header class="header" id="header">
+    <div class="container">
+        <nav class="nav">
+            <a href="index.php" class="logo">PowerHub</a>
 
-    <script>
-        // Header scroll effect
-        const header = document.getElementById('header');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
+            <div class="menu-toggle" id="menuToggle" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </div>
+
+            <div class="nav-links" id="navLinks">
+                <a href="index.php" <?php echo ($current_page === 'index.php') ? 'class="active"' : ''; ?>>Home</a>
+                <a href="products.php" <?php echo ($current_page === 'products.php') ? 'class="active"' : ''; ?>>Products</a>
+                <a href="faq.php" <?php echo ($current_page === 'faq.php') ? 'class="active"' : ''; ?>>FAQ</a>
+                <a href="cart.php" <?php echo ($current_page === 'cart.php') ? 'class="active"' : ''; ?> class="cart-link">
+                    Cart <span class="cart-badge" id="cartBadge">0</span>
+                </a>
+
+                <?php if ($user): ?>
+                    <span class="user-greeting">Hello, <?= htmlspecialchars($user['name']) ?></span>
+                    <a href="account.php" <?php echo ($current_page === 'account.php') ? 'class="active"' : ''; ?>>Account</a>
+                    <a href="logout.php" class="logout-link">Logout</a>
+                <?php else: ?>
+                    <a href="login.php" <?php echo ($current_page === 'login.php') ? 'class="active"' : ''; ?>>Login</a>
+                    <a href="register.php" <?php echo ($current_page === 'register.php') ? 'class="active"' : ''; ?>>Register</a>
+                <?php endif; ?>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<script>
+    // Header scroll effect
+    const header = document.getElementById('header');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 50) header.classList.add('scrolled');
+        else header.classList.remove('scrolled');
+    });
+
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    if (menuToggle) {
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
         });
+    }
 
-        // Mobile menu toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const navLinks = document.getElementById('navLinks');
-        
-        if (menuToggle) {
-            menuToggle.addEventListener('click', () => {
-                navLinks.classList.toggle('active');
-            });
-        }
+    // Update cart badge from localStorage
+    function updateCartBadge() {
+        const badge = document.getElementById('cartBadge');
+        if (!badge) return;
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+        badge.textContent = totalItems;
+    }
 
-        // Update cart badge from localStorage
-        function updateCartBadge() {
-            const cartBadge = document.getElementById('cartBadge');
-            if (cartBadge) {
-                const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-                const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
-                cartBadge.textContent = totalItems;
-            }
-        }
-
-        // Initialize cart badge
-        updateCartBadge();
-        
-        // Listen for storage changes (cart updates)
-        window.addEventListener('storage', updateCartBadge);
-    </script>
+    updateCartBadge();
+    window.addEventListener('storage', updateCartBadge);
+</script>

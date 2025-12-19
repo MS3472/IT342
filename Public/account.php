@@ -315,7 +315,7 @@ $user = get_logged_in_user();
                         <span class="info-label">Customer ID:</span>
                         <span class="info-value"><?php echo htmlspecialchars($user['id']); ?></span>
                     </div>
-                    <a href="/logout.php" class="btn-logout">Logout</a>
+                    <a href="logout.php" class="btn-logout">Logout</a>
                 </div>
 
                 <div class="account-card">
